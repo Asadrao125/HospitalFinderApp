@@ -20,32 +20,32 @@
         android:weightSum="2">
 
         <LinearLayout
+            android:id="@+id/view_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="@color/red"
             android:gravity="center">
 
             <TextView
-                android:id="@+id/view_map"
                 android:layout_width="wrap_content"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:background="@android:color/darker_gray"
                 android:textSize="16sp" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/view_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="@android:color/darker_gray"
             android:gravity="center">
 
             <TextView
-                android:id="@+id/view_list"
                 android:layout_width="wrap_content"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:background="@android:color/darker_gray" />
 
         </LinearLayout>
@@ -77,13 +77,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:src="@drawable/mapview_grey" />
+                    android:src="@drawable/mapview_red" />
 
                 <TextView
                     android:id="@+id/tv_map"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mapview"
+                    android:textColor="@color/red"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -103,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:src="@drawable/mapview_grey" />
+                android:src="@drawable/listview_grey" />
 
             <TextView
                 android:id="@+id/tv_list"
@@ -115,5 +116,41 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_2">
+
+        <RelativeLayout
+            android:id="@+id/layout_mapview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/google_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".SilentModeActivity" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ListView
+                android:divider="@color/white"
+                android:dividerHeight="0dp"
+                android:id="@+id/list_View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

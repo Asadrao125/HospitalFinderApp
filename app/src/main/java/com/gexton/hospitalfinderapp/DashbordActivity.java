@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -32,6 +33,10 @@ public class DashbordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashbord);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
+        }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
@@ -78,15 +83,9 @@ public class DashbordActivity extends AppCompatActivity {
         fragmentDoctors = new FragmentDoctors();
         fragmentPharmacies = new FragmentPharmacies();
         adapter.addFragment(fragmentHospital, "HOSPITAL");
-        adapter.addFragment(fragmentDoctors, "DOCTORS");
-        adapter.addFragment(fragmentPharmacies, "PHARMACIES");
+        adapter.addFragment(fragmentDoctors, "DOCTOR");
+        adapter.addFragment(fragmentPharmacies, "PHARMACY");
         viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        dl.closeDrawers();
-        super.onBackPressed();
     }
 
     @Override
@@ -95,6 +94,16 @@ public class DashbordActivity extends AppCompatActivity {
         if (t.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            dl.closeDrawers();
+            viewPager.setCurrentItem(0);
+        }
     }
 
 }

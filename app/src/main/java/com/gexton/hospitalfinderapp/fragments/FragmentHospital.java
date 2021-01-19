@@ -1,31 +1,72 @@
 package com.gexton.hospitalfinderapp.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gexton.hospitalfinderapp.R;
+import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
+import com.gexton.hospitalfinderapp.api.ApiCallback;
+import com.gexton.hospitalfinderapp.api.ApiManager;
+import com.gexton.hospitalfinderapp.models.HospitalBean;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
-public class FragmentHospital extends Fragment {
-    View view;
-    TextView viewMap, viewList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class FragmentHospital extends Fragment implements ApiCallback {
+
+    LinearLayout viewMap, viewList;
     ImageView img_map, img_list;
     TextView tv_map, tv_list;
+    ApiCallback apiCallback;
+    ListView list_View;
+    GoogleMap mMap;
+    View view;
+    private HospitalArrayAdapter myAdapter;
     LinearLayout mapview_layout, listview_layout;
+    RelativeLayout layout_mapview, layout_listview;
+    public static ArrayList<HospitalBean> hospitalBeanArrayList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_hospital, container, false);
 
+        apiCallback = FragmentHospital.this;
         viewMap = view.findViewById(R.id.view_map);
         viewList = view.findViewById(R.id.view_list);
         img_map = view.findViewById(R.id.img_map);
@@ -34,21 +75,16 @@ public class FragmentHospital extends Fragment {
         tv_list = view.findViewById(R.id.tv_list);
         mapview_layout = view.findViewById(R.id.mapview_layout);
         listview_layout = view.findViewById(R.id.listview_layout);
+        list_View = view.findViewById(R.id.list_View);
 
-        listview_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        // For listener
+        mapview_layout = view.findViewById(R.id.mapview_layout);
+        listview_layout = view.findViewById(R.id.listview_layout);
+        //For hide and show
+        layout_mapview = view.findViewById(R.id.layout_mapview);
+        layout_listview = view.findViewById(R.id.layout_listview);
 
-                tv_list.setTextColor(Color.RED);
-                img_list.setImageResource(R.drawable.mapview_red);
-                viewList.setBackgroundColor(Color.RED);
-
-                tv_map.setTextColor(Color.GRAY);
-                img_map.setImageResource(R.drawable.mapview_grey);
-                viewMap.setBackgroundColor(Color.RED);
-
-            }
-        });
+        getNearbyHospitalsList();
 
         mapview_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,12 +95,121 @@ public class FragmentHospital extends Fragment {
                 viewMap.setBackgroundColor(Color.RED);
 
                 tv_list.setTextColor(Color.GRAY);
-                img_list.setImageResource(R.drawable.mapview_grey);
-                viewList.setBackgroundColor(Color.RED);
+                img_list.setImageResource(R.drawable.listview_grey);
+                viewList.setBackgroundColor(Color.GRAY);
+
+                layout_listview.setVisibility(View.GONE);
+                layout_mapview.setVisibility(View.VISIBLE);
 
             }
         });
 
+        listview_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                tv_list.setTextColor(Color.RED);
+                img_list.setImageResource(R.drawable.listview_red);
+                viewList.setBackgroundColor(Color.RED);
+
+                tv_map.setTextColor(Color.GRAY);
+                img_map.setImageResource(R.drawable.mapview_grey);
+                viewMap.setBackgroundColor(Color.GRAY);
+
+                layout_mapview.setVisibility(View.GONE);
+                layout_listview.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+            }
+        });
         return view;
     }
+
+    private void getNearbyHospitalsList() {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("location", "25.3689856,68.3474944");
+        requestParams.put("radius", "1500");
+        requestParams.put("type", "hospital");
+        requestParams.put("key", "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8");
+
+        ApiManager apiManager = new ApiManager(getActivity(), "get", ApiManager.API_HOME_LIST, requestParams, apiCallback);
+        apiManager.loadURL();
+    }
+
+    public void plotMarkersOnMap() {
+        if (mMap != null) {
+            for (int i = 0; i < hospitalBeanArrayList.size(); i++) {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(new LatLng(hospitalBeanArrayList.get(i).lat, hospitalBeanArrayList.get(i).lng))
+                        .title(hospitalBeanArrayList.get(i).hospitalName)
+                        .snippet(hospitalBeanArrayList.get(i).address)
+                        .anchor(0.5f, 0.5f)
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital));
+                Marker marker = mMap.addMarker(markerOptions);
+
+                marker.setTag(hospitalBeanArrayList.get(i));//tag set kar dya
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanArrayList.get(i).lat, hospitalBeanArrayList.get(i).lng), 12.5f));
+
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+
+                        if (marker.getTag() != null) {
+                            HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
+                            Toast.makeText(getContext(), "Would you like to nevigate to the hospital " + hospitalBeanFromMArker.hospitalName + " ?", Toast.LENGTH_SHORT).show();
+                        }
+
+                        return false;
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void onApiResponce(int httpStCode, int successOrFail, String apiName, String apiResponce) {
+
+        if (apiName.equalsIgnoreCase(ApiManager.API_HOME_LIST)) {
+
+            Log.d("Api_Response", "Api Name: " + apiName);
+            Log.d("Api_Response", "Response: " + apiResponce);
+            Log.d("Api_Response", "Status code: " + httpStCode);
+
+            try {
+                JSONObject jsonObject = new JSONObject(apiResponce);
+                JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+                hospitalBeanArrayList = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    String name = jsonArray.getJSONObject(i).getString("name");
+                    String image = jsonArray.getJSONObject(i).getString("icon");
+                    Double latitude = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                    double longitude = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+                    String address = jsonArray.getJSONObject(i).getString("vicinity");
+
+                    HospitalBean hospitalBean = new HospitalBean(name, image, latitude, longitude, address);
+                    hospitalBeanArrayList.add(hospitalBean);
+                }
+
+                myAdapter = new HospitalArrayAdapter(getContext(), hospitalBeanArrayList);
+                //myAdapter.setAdapter and myAdapter.notifyDatasetChanged both do same work.
+                // myAdapter.notifyDataSetChanged();
+                list_View.setAdapter(myAdapter);
+
+                plotMarkersOnMap();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

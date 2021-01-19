@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -187,6 +188,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .position(new LatLng(latitude, longitude))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
                     .draggable(true));
+
+            SharedPreferences.Editor editor = getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit();
+            editor.putLong("lat", (long) latitude);
+            editor.putLong("lng", (long) longitude);
+            editor.apply();
+            Log.d("TAG_TAG_TAG", "displayLocation: Data Saved");
 
             mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                 @Override
