@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -33,12 +34,21 @@ public class TrackingAndRuoteActivity extends FragmentActivity implements OnMapR
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
+        }
+
         name = getIntent().getStringExtra("name");
         address = getIntent().getStringExtra("address");
         hLatitude = getIntent().getDoubleExtra("lat", 1000);
         hLongitude = getIntent().getDoubleExtra("lng", 1000);
 
         getCurrentLocation();
+
+        if (mMap != null)
+        {
+            
+        }
 
     }
 
@@ -74,4 +84,5 @@ public class TrackingAndRuoteActivity extends FragmentActivity implements OnMapR
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 13.0f));
     }
+
 }

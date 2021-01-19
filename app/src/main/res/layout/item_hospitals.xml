@@ -19,42 +19,42 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_centerVertical="true"
                 android:id="@+id/img_hospital"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/hospital" />
-
-            <ImageView
-                android:id="@+id/img_direction"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:src="@mipmap/hospital" />
-
-            <TextView
-                android:id="@+id/tv_hospital_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_hospital_name"
-                android:layout_toEndOf="@+id/img_hospital"
-                android:layout_toStartOf="@+id/img_direction"
-                android:maxLines="2"
-                android:text="Address" />
 
             <TextView
                 android:id="@+id/tv_hospital_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/img_hospital"
-                android:layout_toStartOf="@+id/img_direction"
                 android:text="Name"
                 android:textColor="@android:color/black"
+                android:layout_toStartOf="@+id/img_direction"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:maxLines="2"
+                android:id="@+id/tv_hospital_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/img_direction"
+                android:layout_below="@+id/tv_hospital_name"
+                android:layout_toEndOf="@+id/img_hospital"
+                android:text="Address"/>
+
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/img_direction"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:src="@mipmap/hospital"/>
 
         </RelativeLayout>
 
