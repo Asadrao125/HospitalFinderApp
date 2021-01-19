@@ -1,12 +1,15 @@
 package com.gexton.hospitalfinderapp.fragments;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -24,6 +27,7 @@ import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
 import com.gexton.hospitalfinderapp.api.ApiCallback;
 import com.gexton.hospitalfinderapp.api.ApiManager;
+import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -54,6 +58,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
     ImageView img_map, img_list;
     TextView tv_map, tv_list;
     ApiCallback apiCallback;
+    double lati, longi;
     ListView list_View;
     GoogleMap mMap;
     View view;
@@ -83,6 +88,8 @@ public class FragmentHospital extends Fragment implements ApiCallback {
         //For hide and show
         layout_mapview = view.findViewById(R.id.layout_mapview);
         layout_listview = view.findViewById(R.id.layout_listview);
+
+        getCurrentLocation();
 
         getNearbyHospitalsList();
 
@@ -208,6 +215,27 @@ public class FragmentHospital extends Fragment implements ApiCallback {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public void getCurrentLocation() {
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+        } else {
+            GPSTracker gps = new GPSTracker(getContext());
+
+            // Check if GPS enabled
+            if (gps.canGetLocation()) {
+
+                lati = gps.getLatitude();
+                longi = gps.getLongitude();
+                Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
+
+            } else {
+                gps.showSettingsAlert();
             }
         }
     }
