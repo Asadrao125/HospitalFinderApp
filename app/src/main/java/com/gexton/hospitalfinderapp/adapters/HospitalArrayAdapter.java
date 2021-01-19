@@ -1,6 +1,7 @@
 package com.gexton.hospitalfinderapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.DashbordActivity;
 import com.gexton.hospitalfinderapp.R;
+import com.gexton.hospitalfinderapp.TrackingAndRuoteActivity;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +50,13 @@ public class HospitalArrayAdapter extends ArrayAdapter<HospitalBean> {
         img_direction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "" + hospitalBeanList.get(position).lat + "\n" + hospitalBeanList.get(position).lng, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "" + hospitalBeanList.get(position).lat + "\n" + hospitalBeanList.get(position).lng, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, TrackingAndRuoteActivity.class);
+                intent.putExtra("name", hospitalBeanList.get(position).hospitalName);
+                intent.putExtra("address", hospitalBeanList.get(position).address);
+                intent.putExtra("lat", hospitalBeanList.get(position).lat);
+                intent.putExtra("lng", hospitalBeanList.get(position).lng);
+                context.startActivity(intent);
             }
         });
 

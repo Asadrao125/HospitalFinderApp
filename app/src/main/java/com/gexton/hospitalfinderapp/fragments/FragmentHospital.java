@@ -140,8 +140,12 @@ public class FragmentHospital extends Fragment implements ApiCallback {
     }
 
     private void getNearbyHospitalsList() {
+        String lat = String.valueOf(lati);
+        String lng = String.valueOf(longi);
+
         RequestParams requestParams = new RequestParams();
-        requestParams.put("location", "25.3689856,68.3474944");
+        //requestParams.put("location", "25.3689856,68.3474944");
+        requestParams.put("location", lat + "," + lng);
         requestParams.put("radius", "1500");
         requestParams.put("type", "hospital");
         requestParams.put("key", "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8");
@@ -227,7 +231,6 @@ public class FragmentHospital extends Fragment implements ApiCallback {
         } else {
             GPSTracker gps = new GPSTracker(getContext());
 
-            // Check if GPS enabled
             if (gps.canGetLocation()) {
 
                 lati = gps.getLatitude();
