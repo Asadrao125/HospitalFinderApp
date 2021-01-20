@@ -61,6 +61,7 @@ public class HospitalArrayAdapter extends ArrayAdapter<HospitalBean> {
             }
         });
 
+
         return view;
     }
 }

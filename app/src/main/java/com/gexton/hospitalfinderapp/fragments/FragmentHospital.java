@@ -172,20 +172,6 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                 marker.setTag(hospitalBeanArrayList.get(i));//tag set kar dya
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanArrayList.get(i).lat, hospitalBeanArrayList.get(i).lng), 12.5f));
 
-                /*mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-
-                        if (marker.getTag() != null) {
-                            HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
-                            Toast.makeText(getContext(), "Would you like to nevigate to the hospital " + hospitalBeanFromMArker.hospitalName + " ?", Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        return false;
-                    }
-                });*/
-
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                     @Override
                     public View getInfoWindow(Marker marker) {
@@ -208,24 +194,33 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                             tv_longitude.setText("" + hospitalBeanFromMArker.lng);
                             hospital_image.setImageResource(R.drawable.location);
                             tv_address.setText(hospitalBeanFromMArker.address);
+                            btnTrack.setText("Track " + hospitalBeanFromMArker.hospitalName);
+                            btnTrack.setTextColor(Color.BLACK);
                         }
 
                         btnTrack.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
-                                Intent intent = new Intent(getContext(), RuoteAndTrackActivity.class);
-                                intent.putExtra("name", hospitalBeanFromMArker.hospitalName);
-                                intent.putExtra("address", hospitalBeanFromMArker.address);
-                                intent.putExtra("lat", hospitalBeanFromMArker.lat);
-                                intent.putExtra("lng", hospitalBeanFromMArker.lng);
-                                startActivity(intent);
                             }
                         });
 
                         return v;
                     }
                 });
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
+                        Intent intent = new Intent(getContext(), RuoteAndTrackActivity.class);
+                        intent.putExtra("name", hospitalBeanFromMArker.hospitalName);
+                        intent.putExtra("address", hospitalBeanFromMArker.address);
+                        intent.putExtra("lat", hospitalBeanFromMArker.lat);
+                        intent.putExtra("lng", hospitalBeanFromMArker.lng);
+                        startActivity(intent);
+                    }
+                });
+
             }
         }
     }
