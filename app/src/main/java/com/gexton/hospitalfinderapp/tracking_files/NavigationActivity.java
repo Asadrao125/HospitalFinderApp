@@ -62,9 +62,9 @@ import com.google.android.gms.tasks.Task;
 
 public class NavigationActivity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationProviderClient;
+    LocationCallback mLocationCallback;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     LocationRequest mLocationRequest;
-    LocationCallback mLocationCallback;
     Button button, bService;
     SupportMapFragment mapFragment;
     GoogleMap mMap;
@@ -111,10 +111,8 @@ public class NavigationActivity extends AppCompatActivity {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(13.0827, 80.2707), 8);
+                CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(cLatitude, cLongitude), 8);
                 mMap.moveCamera(point);
-
-                CameraUpdate point2 = CameraUpdateFactory.newLatLngZoom(new LatLng(13.0827, 80.2707), 8);
 
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(hLat, hLong))
@@ -122,7 +120,6 @@ public class NavigationActivity extends AppCompatActivity {
                         .title(name)
                         .snippet(address)
                         .draggable(true));
-                mMap.moveCamera(point2);
 
                 mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
@@ -294,7 +291,6 @@ public class NavigationActivity extends AppCompatActivity {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
                     updateMarker(location);
                 }
             }

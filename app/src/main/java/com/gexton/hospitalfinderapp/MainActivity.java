@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int UPDATE_INTERVAL = 5000;
     private static final int FASTEST_INTERVAL = 3000;
     private static final int DISPLACEMENT = 10;
-    Marker markerCurrent;
+    //Marker markerCurrent;
     double latitude, longitude;
 
     @Override
@@ -77,13 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
-
-        /* LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
-
         statusCheck();
-
     }
 
     public void statusCheck() {
@@ -223,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public View getInfoContents(Marker marker) {
 
                     View v = getLayoutInflater().inflate(R.layout.custom_marker_layout, null);
-                    ImageView hospital_image = (ImageView) v.findViewById(R.id.hospital_image);
+                    /*ImageView hospital_image = (ImageView) v.findViewById(R.id.hospital_image);
                     TextView hospital_name = v.findViewById(R.id.hospital_name);
                     TextView tv_latitude = v.findViewById(R.id.tv_latitude);
                     TextView tv_longitude = v.findViewById(R.id.tv_longitude);
@@ -231,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     hospital_name.setText("Hospital Name");
                     tv_latitude.setText("" + marker.getPosition().latitude);
                     tv_longitude.setText("" + marker.getPosition().longitude);
-                    hospital_image.setImageResource(R.drawable.location);
+                    hospital_image.setImageResource(R.drawable.location);*/
 
                     return v;
 

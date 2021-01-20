@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.BroadcastReceiver;
@@ -19,6 +20,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.DashbordActivity;
 import com.gexton.hospitalfinderapp.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,8 +39,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import static com.gexton.hospitalfinderapp.tracking_files.NavigationActivity.JOB_STATE_CHANGED;
-import static com.gexton.hospitalfinderapp.tracking_files.NavigationActivity.LOCATION_ACQUIRED;
+import static com.gexton.hospitalfinderapp.tracking_files.RuoteTestActivity.JOB_STATE_CHANGED;
+import static com.gexton.hospitalfinderapp.tracking_files.RuoteTestActivity.LOCATION_ACQUIRED;
 
 /**
  * Created by Marty on 11/25/2017.
@@ -111,9 +113,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
-                    // ...
-//                        Toast.makeText(getBaseContext(),"new point",Toast.LENGTH_SHORT).show();
+
                     Intent i = new Intent(LOCATION_ACQUIRED);
                     i.putExtra("location", location);
 
@@ -123,7 +123,6 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                         updatesList.add(location); //if available add latest location point and send list to server
                         Intent i1 = new Intent(LocationJobService.this, UploadLocationService.class);
                         i1.putParcelableArrayListExtra("points", updatesList);
-//                            startService(i1); //i have disabled the call as the server URL in intent service is dummy URL. Change the URL to your server URL and call this intent service
                         updatesList.clear();
                     } else { // if there is no internet connection
                         updatesList.add(location); // add location points to the list
@@ -194,8 +193,11 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
     }
 
     private void createNotification() {
-        Notification.Builder mBuilder = new Notification.Builder(
-                getBaseContext());
+
+        PendingIntent pI;
+        pI = PendingIntent.getActivity(this, 0, new Intent(this, DashbordActivity.class), 0);
+
+        Notification.Builder mBuilder = new Notification.Builder(getBaseContext());
         Notification notification = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = mBuilder.setSmallIcon(R.drawable.doctor)
@@ -209,6 +211,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     .setColor(ContextCompat.getColor(getBaseContext(), R.color.red))
                     .setStyle(new Notification.BigTextStyle().bigText("Track in progress"))
                     .setChannelId("track_marty")
+                    .setContentIntent(pI)
                     .setShowWhen(true)
                     .setOngoing(true)
                     .build();
@@ -226,6 +229,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     .setStyle(new Notification.BigTextStyle().bigText("Track in progress"))
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setShowWhen(true)
+                    .setContentIntent(pI)
                     .setOngoing(true)
                     .build();
         }
@@ -248,7 +252,6 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
     }
 
     private void stopLocationUpdates() {
-
         // It is a good practice to remove location requests when the activity is in a paused or
         // stopped state. Doing so helps battery performance and is especially
         // recommended in applications that request frequent location updates.

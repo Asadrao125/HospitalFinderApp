@@ -24,6 +24,7 @@ import com.akexorcist.googledirection.util.DirectionConverter
 import com.akexorcist.googledirection.util.execute
 import com.gexton.hospitalfinderapp.gps.GPSTracker
 import com.gexton.hospitalfinderapp.tracking_files.NavigationActivity
+import com.gexton.hospitalfinderapp.tracking_files.RuoteTestActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -78,7 +79,7 @@ class RuoteAndTrackActivity : AppCompatActivity(), OnMapReadyCallback {
         btnNavigation = findViewById(R.id.btnNavigation) as Button
 
         btnNavigation.setOnClickListener {
-            val intent = Intent(this, NavigationActivity::class.java)
+            val intent = Intent(this, RuoteTestActivity::class.java)
             intent.putExtra("name", name)
             intent.putExtra("address", address)
             intent.putExtra("hLat", hLat)
@@ -132,7 +133,7 @@ class RuoteAndTrackActivity : AppCompatActivity(), OnMapReadyCallback {
 
                                     //CalculationByDistance(LatLng(cLatitude, cLongitude), LatLng(hLat, hLong))
 
-                                    Toast.makeText(applicationContext, "Distance: " + CalculationByDistance(LatLng(cLatitude, cLongitude), LatLng(hLat, hLong)), Toast.LENGTH_SHORT).show()
+                                    //Toast.makeText(applicationContext, "Distance: " + CalculationByDistance(LatLng(cLatitude, cLongitude), LatLng(hLat, hLong)), Toast.LENGTH_SHORT).show()
 
                                     //MArker for hospital location
                                     mMap?.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital))

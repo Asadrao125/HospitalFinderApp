@@ -181,7 +181,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                     @Override
                     public View getInfoContents(Marker marker) {
                         View v = getLayoutInflater().inflate(R.layout.custom_marker_layout, null);
-                        ImageView hospital_image = (ImageView) v.findViewById(R.id.hospital_image);
+                        ImageView hospital_image = v.findViewById(R.id.hospital_image);
                         TextView hospital_name = v.findViewById(R.id.hospital_name);
                         TextView tv_latitude = v.findViewById(R.id.tv_latitude);
                         TextView tv_longitude = v.findViewById(R.id.tv_longitude);

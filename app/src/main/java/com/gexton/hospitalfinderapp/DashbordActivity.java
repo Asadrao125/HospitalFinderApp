@@ -6,9 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.gexton.hospitalfinderapp.adapters.ViewPagerAdapter;
@@ -21,6 +24,8 @@ public class DashbordActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    RelativeLayout main_view;
 
     FragmentHospital fragmentHospital;
     FragmentDoctors fragmentDoctors;
@@ -44,10 +49,29 @@ public class DashbordActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
         dl = (DrawerLayout) findViewById(R.id.activity_main);
-        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+        main_view = findViewById(R.id.main_view);
 
+        t = new ActionBarDrawerToggle(this, dl, toolbar, R.string.Open, R.string.Close) {
+            //private float scaleFactor = 4f;
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                /*main_view.setTranslationX(slideOffset * drawerView.getWidth());
+                dl.setScrimColor(Color.TRANSPARENT);
+                dl.bringChildToFront(drawerView);
+                dl.requestLayout();*/
+
+                /*float slideX = drawerView.getWidth() * slideOffset;
+                main_view.setTranslationX(slideX);
+                main_view.setScaleX(1 - (slideOffset / scaleFactor));
+                main_view.setScaleY(1 - (slideOffset / scaleFactor));*/
+
+            }
+        };
+
+        dl.setDrawerListener(t);
         dl.addDrawerListener(t);
         t.syncState();
         toolbar = findViewById(R.id.toolbar);
@@ -65,7 +89,6 @@ public class DashbordActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position, false);
-
             }
 
             @Override
@@ -106,5 +129,4 @@ public class DashbordActivity extends AppCompatActivity {
             viewPager.setCurrentItem(0);
         }
     }
-
 }
