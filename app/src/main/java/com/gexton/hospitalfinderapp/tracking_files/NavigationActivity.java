@@ -29,6 +29,8 @@ import android.util.Log;
 import android.util.Property;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gexton.hospitalfinderapp.R;
@@ -75,15 +77,32 @@ public class NavigationActivity extends AppCompatActivity {
     boolean registered = false, isServiceStarted = false;
     public static final String JOB_STATE_CHANGED = "jobStateChanged";
     public static final String LOCATION_ACQUIRED = "locAcquired";
+    String name, address;
+    double hLat, hLong, cLatitude, cLongitude;
+    TextView tvHospitalName;
+    ImageView imgBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.black, this.getTheme()));
+        }
+
+        name = getIntent().getStringExtra("name");
+        address = getIntent().getStringExtra("address");
+        hLat = getIntent().getDoubleExtra("hLat", 0.0);
+        hLong = getIntent().getDoubleExtra("hLong", 0.0);
+        cLatitude = getIntent().getDoubleExtra("cLat", 0.0);
+        cLongitude = getIntent().getDoubleExtra("cLong", 0.0);
+
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         button = (Button) findViewById(R.id.b_action);
         bService = (Button) findViewById(R.id.b_service);
+        tvHospitalName = findViewById(R.id.tvHospitalName);
+        imgBack = findViewById(R.id.img_back);
         mapFragment = SupportMapFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.map_fragment, mapFragment).commitAllowingStateLoss();
@@ -94,6 +113,17 @@ public class NavigationActivity extends AppCompatActivity {
                 mMap = googleMap;
                 CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(13.0827, 80.2707), 8);
                 mMap.moveCamera(point);
+
+                CameraUpdate point2 = CameraUpdateFactory.newLatLngZoom(new LatLng(13.0827, 80.2707), 8);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(hLat, hLong))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital))
+                        .title(name)
+                        .snippet(address)
+                        .draggable(true));
+                mMap.moveCamera(point2);
+
                 mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
@@ -142,32 +172,15 @@ public class NavigationActivity extends AppCompatActivity {
                 }
             }
         });
-    }
 
-   /* public void OnButtonClick(View view) {
-        switch (view.getId()) {
-            case R.id.b_action:
-                if (view.getTag().equals("s")) {
-                    createLocationRequest();
-                } else {
-                    Log.d("clicked", "button");
-                    stopLocationUpdates();
-                }
-                break;
-            case R.id.b_service:
-                if (view.getTag().equals("s")) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Log.d("registered", " on start service");
-                        startBackgroundService();
-                    } else {
-                        Toast.makeText(getBaseContext(), "service for pre lollipop will be available in next update", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    stopBackgroundService();
-                }
-                break;
-        }
-    }*/
+        tvHospitalName.setText(name);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+    }
 
     private BroadcastReceiver jobStateChanged = new BroadcastReceiver() {
         @Override
@@ -222,8 +235,7 @@ public class NavigationActivity extends AppCompatActivity {
             i.addAction(LOCATION_ACQUIRED);
             LocalBroadcastManager.getInstance(this).registerReceiver(jobStateChanged, i);
         }
-        JobScheduler jobScheduler =
-                (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         assert jobScheduler != null;
         jobScheduler.schedule(new JobInfo.Builder(LocationJobService.LOCATION_SERVICE_JOB_ID,
                 new ComponentName(this, LocationJobService.class))
@@ -246,9 +258,6 @@ public class NavigationActivity extends AppCompatActivity {
         task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // All location settings are satisfied. The client can initialize
-                // location requests here.
-                // ...
                 bService.setVisibility(View.GONE);
                 startLocationUpdates();
             }
@@ -296,9 +305,7 @@ public class NavigationActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "location permission required !!", Toast.LENGTH_SHORT).show();
             return;
         }
-        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest,
-                mLocationCallback,
-                null /* Looper */);
+        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
         button.setTag("f");
         button.setText("STOP FOREGROUND TRACKING");
         //Toast.makeText(getApplicationContext(),"Location update started",Toast.LENGTH_SHORT).show();
@@ -428,11 +435,11 @@ public class NavigationActivity extends AppCompatActivity {
             if (carMarker == null) {
                 oldLocation = location;
                 MarkerOptions markerOptions = new MarkerOptions();
-                BitmapDescriptor car = BitmapDescriptorFactory.fromResource(R.mipmap.hospital);
-                markerOptions.icon(car);
+                //BitmapDescriptor car = BitmapDescriptorFactory.fromResource(R.drawable.location);
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
                 markerOptions.anchor(0.5f, 0.5f); // set the car image to center of the point instead of anchoring to above or below the location
                 markerOptions.flat(true); // set as true, so that when user rotates the map car icon will remain in the same direction
-                markerOptions.position(new LatLng(location.getLatitude(), location.getLongitude()));
+                markerOptions.title("My Location").position(new LatLng(location.getLatitude(), location.getLongitude()));
                 carMarker = mMap.addMarker(markerOptions);
                 if (location.hasBearing()) { // if location has bearing set the same bearing to marker(if location is acquired using GPS bearing will be available)
                     bearing = location.getBearing();

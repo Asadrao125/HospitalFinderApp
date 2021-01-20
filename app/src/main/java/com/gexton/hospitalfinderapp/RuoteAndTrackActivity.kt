@@ -49,6 +49,8 @@ class RuoteAndTrackActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var tv: TextView
     lateinit var btnNavigation: Button
+    var newDistance = 0.0
+    var newDuration = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +79,12 @@ class RuoteAndTrackActivity : AppCompatActivity(), OnMapReadyCallback {
 
         btnNavigation.setOnClickListener {
             val intent = Intent(this, NavigationActivity::class.java)
+            intent.putExtra("name", name)
+            intent.putExtra("address", address)
+            intent.putExtra("hLat", hLat)
+            intent.putExtra("hLong", hLong)
+            intent.putExtra("cLat", cLatitude)
+            intent.putExtra("cLong", cLongitude)
             startActivity(intent)
         }
     }
@@ -102,10 +110,17 @@ class RuoteAndTrackActivity : AppCompatActivity(), OnMapReadyCallback {
                                     direction.routeList.get(0).totalDistance
                                     direction.routeList.get(0).totalDuration
 
-                                    var newDistance = direction.routeList.get(0).totalDistance / 1000
-                                    var newDuration = direction.routeList.get(0).totalDuration
+                                    newDistance = (direction.routeList.get(0).totalDistance / 1000).toDouble()
+                                    newDuration = (direction.routeList.get(0).totalDuration / 60).toDouble()
 
-                                    tv.text = "Distance: " + newDistance + " KM" + "\nDuration: " + newDuration
+                                    tv.text = "Distance: " + newDistance + " km" + "\nDuration: " + newDuration + " mins"
+
+                                    /*if (newDistance < 1000 || newDuration < 60) {
+                                        tv.text = "Distance: " + newDistance + " meter" + "\nDuration: " + newDuration + " mins"
+                                    } else {
+                                        newDistance / 1000
+                                        tv.text = "Distance: " + newDistance + " km" + "\nDuration: " + newDuration + " s"
+                                    }*/
 
                                     // Do something
                                     val route = direction.routeList[0]
