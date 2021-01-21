@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gexton.hospitalfinderapp.R;
+import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.RuoteAndTrackActivity;
 import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
 import com.gexton.hospitalfinderapp.api.ApiCallback;
@@ -212,7 +213,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
                         HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
-                        Intent intent = new Intent(getContext(), RuoteAndTrackActivity.class);
+                        Intent intent = new Intent(getContext(), RouteShowActivity.class);
                         intent.putExtra("name", hospitalBeanFromMArker.hospitalName);
                         intent.putExtra("address", hospitalBeanFromMArker.address);
                         intent.putExtra("lat", hospitalBeanFromMArker.lat);

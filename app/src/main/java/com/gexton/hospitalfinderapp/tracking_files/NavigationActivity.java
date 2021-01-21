@@ -1,6 +1,7 @@
 package com.gexton.hospitalfinderapp.tracking_files;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -21,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +35,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.googledirection.DirectionCallback;
+import com.akexorcist.googledirection.GoogleDirection;
+import com.akexorcist.googledirection.constant.TransportMode;
+import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.model.Leg;
+import com.akexorcist.googledirection.model.Route;
+import com.akexorcist.googledirection.model.Step;
+import com.akexorcist.googledirection.util.DirectionConverter;
 import com.gexton.hospitalfinderapp.R;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -54,11 +64,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class NavigationActivity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationProviderClient;
@@ -81,6 +97,7 @@ public class NavigationActivity extends AppCompatActivity {
     double hLat, hLong, cLatitude, cLongitude;
     TextView tvHospitalName;
     ImageView imgBack;
+    String serverKey = "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +135,7 @@ public class NavigationActivity extends AppCompatActivity {
                         .position(new LatLng(hLat, hLong))
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital))
                         .title(name)
-                        .snippet(address)
-                        .draggable(true));
+                        .snippet(address));
 
                 mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
@@ -129,6 +145,9 @@ public class NavigationActivity extends AppCompatActivity {
                         mMap.getUiSettings().setZoomControlsEnabled(true);
                     }
                 });
+
+                drawRoutes(mMap);
+
             }
         });
 
@@ -158,7 +177,7 @@ public class NavigationActivity extends AppCompatActivity {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+        /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (view.getTag().equals("s")) {
@@ -168,7 +187,7 @@ public class NavigationActivity extends AppCompatActivity {
                     stopLocationUpdates();
                 }
             }
-        });
+        });*/
 
         tvHospitalName.setText(name);
         imgBack.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +196,7 @@ public class NavigationActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
     }
 
     private BroadcastReceiver jobStateChanged = new BroadcastReceiver() {
@@ -207,7 +227,7 @@ public class NavigationActivity extends AppCompatActivity {
         } else {
             bService.setTag("s");
             bService.setText("START BACKGROUND TRACKING");
-            button.setVisibility(View.VISIBLE);
+            button.setVisibility(View.GONE);
         }
     }
 
@@ -344,7 +364,6 @@ public class NavigationActivity extends AppCompatActivity {
                     createLocationRequest();
                     break;
                 case Activity.RESULT_CANCELED:
-//                    showTimeoutDialog("Without location access, GreenPool Enterprise can't be used !!", true);
                     Log.i("Dash", "User choose not to make required location settings changes.");
                     break;
             }
@@ -430,13 +449,13 @@ public class NavigationActivity extends AppCompatActivity {
         if (mMap != null && mapLoaded) {
             if (carMarker == null) {
                 oldLocation = location;
-                MarkerOptions markerOptions = new MarkerOptions();
+                /*MarkerOptions markerOptions = new MarkerOptions();
                 //BitmapDescriptor car = BitmapDescriptorFactory.fromResource(R.drawable.location);
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
                 markerOptions.anchor(0.5f, 0.5f); // set the car image to center of the point instead of anchoring to above or below the location
                 markerOptions.flat(true); // set as true, so that when user rotates the map car icon will remain in the same direction
                 markerOptions.title("My Location").position(new LatLng(location.getLatitude(), location.getLongitude()));
-                carMarker = mMap.addMarker(markerOptions);
+                carMarker = mMap.addMarker(markerOptions);*/
                 if (location.hasBearing()) { // if location has bearing set the same bearing to marker(if location is acquired using GPS bearing will be available)
                     bearing = location.getBearing();
                 } else {
@@ -461,5 +480,109 @@ public class NavigationActivity extends AppCompatActivity {
             Log.e("map null or not loaded", "");
         }
     }
+
+    private void drawRoutes(final GoogleMap mMap) {
+      /*  try {
+            mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
+                    .title("My Location")
+                    .position(new LatLng(cLatitude, cLongitude)));
+
+            mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital))
+                    .title(name)
+                    .snippet(address)
+                    .position(new LatLng(hLat, hLong)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+        GoogleDirection.withServerKey(serverKey)
+                .from(new LatLng(cLatitude, cLongitude))
+                // .and(markerPoints)
+                .to(new LatLng(hLat, hLong))
+                .alternativeRoute(true)
+                .transportMode(TransportMode.DRIVING)
+                .execute(new DirectionCallback() {
+                    @Override
+                    public void onDirectionSuccess(@Nullable Direction direction) {
+                        if (direction.isOK()) {
+
+                            for (int index = 0; index < direction.getRouteList().size(); index++) {
+
+                                Route route = direction.getRouteList().get(index);
+                                Leg leg = route.getLegList().get(0);
+
+                                List<Step> stepList = leg.getStepList();
+                                ArrayList<PolylineOptions> polylineOptionList = DirectionConverter.createTransitPolyline(getApplicationContext(), stepList,
+                                        5, Color.parseColor("#" + getRandom()), 3, Color.BLUE);
+
+                                for (PolylineOptions polylineOption : polylineOptionList) {
+                                    mMap.addPolyline(polylineOption);
+
+                                }
+                            }//end loop
+                            setCameraWithCoordinationBounds(direction.getRouteList().get(0), mMap);
+                        }
+                    }
+
+                    @Override
+                    public void onDirectionFailure(Throwable t) {
+                    }
+                });
+    }
+
+    private void setCameraWithCoordinationBounds(Route route, GoogleMap mMap) {
+        LatLng southwest = route.getBound().getSouthwestCoordination().getCoordination();
+        LatLng northeast = route.getBound().getNortheastCoordination().getCoordination();
+        LatLngBounds bounds = new LatLngBounds(southwest, northeast);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+    }
+
+    public static String getRandom() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("C0C0C0");
+        list.add("808080");
+        list.add("FF0000");
+        list.add("800000");
+        list.add("FFFF00");
+        list.add("808000");
+        list.add("00FF00");
+        list.add("008000");
+        list.add("00FFFF");
+        list.add("0000FF");
+        list.add("000080");
+        list.add("FF00FF");
+        list.add("800080");
+        list.add("800080");
+
+        int rnd = new Random().nextInt(list.size());
+        return list.get(rnd);
+    }
+
+    public void startService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.d("registered", " on start service");
+            startBackgroundService();
+        } else {
+            Toast.makeText(getBaseContext(), "service for pre lollipop will be available in next update", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void stopService() {
+        stopBackgroundService();
+    }
+
+    /*@Override
+    protected void onStart() {
+        super.onStart();
+        startService();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        stopService();
+    }*/
 
 }

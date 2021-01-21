@@ -7,6 +7,7 @@
     tools:context=".tracking_files.NavigationActivity">
 
     <Button
+        android:visibility="gone"
         android:id="@+id/b_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/img_back"
+                android:maxLines="1"
                 android:text="Hospital Name"
                 android:textColor="@color/white"
                 android:textSize="18sp" />

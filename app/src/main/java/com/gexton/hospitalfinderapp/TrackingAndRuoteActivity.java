@@ -45,11 +45,6 @@ public class TrackingAndRuoteActivity extends FragmentActivity implements OnMapR
 
         getCurrentLocation();
 
-        if (mMap != null)
-        {
-            
-        }
-
     }
 
     public void getCurrentLocation() {

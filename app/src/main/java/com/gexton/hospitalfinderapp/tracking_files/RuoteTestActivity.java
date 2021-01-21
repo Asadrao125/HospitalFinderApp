@@ -125,12 +125,11 @@ public class RuoteTestActivity extends AppCompatActivity {
 
         isServiceStarted = getSharedPreferences("track", MODE_PRIVATE).getBoolean("isServiceStarted", false);
 
-        if (!registered ) {
+        if (!registered) {
             IntentFilter i = new IntentFilter(JOB_STATE_CHANGED);
             i.addAction(LOCATION_ACQUIRED);
             LocalBroadcastManager.getInstance(this).registerReceiver(jobStateChanged, i);
         }
-
     }
 
     private void drawRoutes(final GoogleMap mMap) {
