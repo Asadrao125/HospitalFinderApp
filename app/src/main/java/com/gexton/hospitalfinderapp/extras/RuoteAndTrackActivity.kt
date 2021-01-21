@@ -1,4 +1,4 @@
-package com.gexton.hospitalfinderapp
+package com.gexton.hospitalfinderapp.extras
 
 import android.Manifest
 import android.app.Activity
@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
@@ -22,9 +21,10 @@ import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.model.Route
 import com.akexorcist.googledirection.util.DirectionConverter
 import com.akexorcist.googledirection.util.execute
+import com.gexton.hospitalfinderapp.BuildConfig
+import com.gexton.hospitalfinderapp.R
 import com.gexton.hospitalfinderapp.gps.GPSTracker
 import com.gexton.hospitalfinderapp.tracking_files.NavigationActivity
-import com.gexton.hospitalfinderapp.tracking_files.RuoteTestActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,10 +33,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import java.text.DecimalFormat
 import java.util.*
 import kotlin.time.ExperimentalTime
-import kotlin.time.minutes
 
 class RuoteAndTrackActivity : AppCompatActivity(), OnMapReadyCallback {
 

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gexton.hospitalfinderapp.R;
-import com.gexton.hospitalfinderapp.RuoteAndTrackActivity;
+import com.gexton.hospitalfinderapp.extras.RuoteAndTrackActivity;
 import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
 import com.gexton.hospitalfinderapp.api.ApiCallback;
 import com.gexton.hospitalfinderapp.api.ApiManager;

@@ -449,13 +449,13 @@ public class NavigationActivity extends AppCompatActivity {
         if (mMap != null && mapLoaded) {
             if (carMarker == null) {
                 oldLocation = location;
-                /*MarkerOptions markerOptions = new MarkerOptions();
+                MarkerOptions markerOptions = new MarkerOptions();
                 //BitmapDescriptor car = BitmapDescriptorFactory.fromResource(R.drawable.location);
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
                 markerOptions.anchor(0.5f, 0.5f); // set the car image to center of the point instead of anchoring to above or below the location
                 markerOptions.flat(true); // set as true, so that when user rotates the map car icon will remain in the same direction
                 markerOptions.title("My Location").position(new LatLng(location.getLatitude(), location.getLongitude()));
-                carMarker = mMap.addMarker(markerOptions);*/
+                carMarker = mMap.addMarker(markerOptions);
                 if (location.hasBearing()) { // if location has bearing set the same bearing to marker(if location is acquired using GPS bearing will be available)
                     bearing = location.getBearing();
                 } else {
@@ -572,17 +572,5 @@ public class NavigationActivity extends AppCompatActivity {
     public void stopService() {
         stopBackgroundService();
     }
-
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-        startService();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        stopService();
-    }*/
 
 }

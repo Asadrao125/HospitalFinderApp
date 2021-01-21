@@ -15,11 +15,11 @@
         <activity android:name=".tracking_files.RuoteTestActivity" />
         <activity android:name=".tracking_files.NavigationActivity" />
         <activity
-            android:name=".RuoteAndTrackActivity"
+            android:name=".extras.RuoteAndTrackActivity"
             android:label="@string/title_activity_ruote_and_track"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
-            android:name=".TrackingAndRuoteActivity"
+            android:name=".extras.TrackingAndRuoteActivity"
             android:label="@string/title_activity_tracking_and_ruote" />
         <activity android:name=".DashbordActivity" />
         <activity android:name=".SplashActivity">

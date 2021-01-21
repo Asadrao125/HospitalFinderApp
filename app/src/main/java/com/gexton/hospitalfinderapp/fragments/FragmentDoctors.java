@@ -10,8 +10,6 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import cz.msebera.android.httpclient.entity.mime.Header;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gexton.hospitalfinderapp.R;
-import com.gexton.hospitalfinderapp.RuoteAndTrackActivity;
+import com.gexton.hospitalfinderapp.extras.RuoteAndTrackActivity;
 import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
 import com.gexton.hospitalfinderapp.api.ApiCallback;
 import com.gexton.hospitalfinderapp.api.ApiManager;
@@ -39,8 +37,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;

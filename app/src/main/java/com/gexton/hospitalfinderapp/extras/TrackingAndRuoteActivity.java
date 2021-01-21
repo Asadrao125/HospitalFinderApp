@@ -1,4 +1,4 @@
-package com.gexton.hospitalfinderapp;
+package com.gexton.hospitalfinderapp.extras;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

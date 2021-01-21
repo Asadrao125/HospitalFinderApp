@@ -8,14 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.gexton.hospitalfinderapp.DashbordActivity;
 import com.gexton.hospitalfinderapp.R;
-import com.gexton.hospitalfinderapp.RuoteAndTrackActivity;
-import com.gexton.hospitalfinderapp.TrackingAndRuoteActivity;
+import com.gexton.hospitalfinderapp.extras.RuoteAndTrackActivity;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
