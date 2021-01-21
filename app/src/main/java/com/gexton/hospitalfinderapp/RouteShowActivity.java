@@ -125,7 +125,7 @@ public class RouteShowActivity extends AppCompatActivity {
     private void drawRoutes(final GoogleMap mMap) {
         try {
             mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car))
                     .title("My Location")
                     .position(new LatLng(cLatitude, cLongitude)));
 

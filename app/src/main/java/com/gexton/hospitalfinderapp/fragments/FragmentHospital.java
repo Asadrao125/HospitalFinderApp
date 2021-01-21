@@ -181,7 +181,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                             hospital_name.setText(hospitalBeanFromMArker.hospitalName);
                             tv_latitude.setText("" + hospitalBeanFromMArker.lat);
                             tv_longitude.setText("" + hospitalBeanFromMArker.lng);
-                            hospital_image.setImageResource(R.drawable.location);
+                            hospital_image.setImageResource(R.drawable.hospital);
                             tv_address.setText(hospitalBeanFromMArker.address);
                             btnTrack.setText("Track " + hospitalBeanFromMArker.hospitalName);
                             btnTrack.setTextColor(Color.BLACK);
@@ -271,5 +271,4 @@ public class FragmentHospital extends Fragment implements ApiCallback {
             }
         }
     }
-
 }

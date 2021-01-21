@@ -451,7 +451,7 @@ public class NavigationActivity extends AppCompatActivity {
                 oldLocation = location;
                 MarkerOptions markerOptions = new MarkerOptions();
                 //BitmapDescriptor car = BitmapDescriptorFactory.fromResource(R.drawable.location);
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car));
                 markerOptions.anchor(0.5f, 0.5f); // set the car image to center of the point instead of anchoring to above or below the location
                 markerOptions.flat(true); // set as true, so that when user rotates the map car icon will remain in the same direction
                 markerOptions.title("My Location").position(new LatLng(location.getLatitude(), location.getLongitude()));

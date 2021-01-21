@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gexton.hospitalfinderapp.R;
+import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.extras.RuoteAndTrackActivity;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
 
@@ -48,7 +49,7 @@ public class HospitalArrayAdapter extends ArrayAdapter<HospitalBean> {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getContext(), "" + hospitalBeanList.get(position).lat + "\n" + hospitalBeanList.get(position).lng, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, RuoteAndTrackActivity.class);
+                Intent intent = new Intent(context, RouteShowActivity.class);
                 intent.putExtra("name", hospitalBeanList.get(position).hospitalName);
                 intent.putExtra("address", hospitalBeanList.get(position).address);
                 intent.putExtra("lat", hospitalBeanList.get(position).lat);
@@ -56,8 +57,6 @@ public class HospitalArrayAdapter extends ArrayAdapter<HospitalBean> {
                 context.startActivity(intent);
             }
         });
-
-
         return view;
     }
 }
