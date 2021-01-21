@@ -60,7 +60,7 @@ public class RouteShowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route_show);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.black, this.getTheme()));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -82,21 +82,26 @@ public class RouteShowActivity extends AppCompatActivity {
         tv_duration = findViewById(R.id.tv_duration);
         btn_navigate = findViewById(R.id.btn_navigate);
 
-        setTitle(name);
+        setTitle("Possible Routes");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         btn_navigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
-                intent.putExtra("name", name);
-                intent.putExtra("address", address);
-                intent.putExtra("cLat", cLatitude);
-                intent.putExtra("cLong", cLongitude);
-                intent.putExtra("hLat", hLat);
-                intent.putExtra("hLong", hLong);
-                startActivity(intent);
+                GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
+                if (gpsTracker.canGetLocation()) {
+                    Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("address", address);
+                    intent.putExtra("cLat", cLatitude);
+                    intent.putExtra("cLong", cLongitude);
+                    intent.putExtra("hLat", hLat);
+                    intent.putExtra("hLong", hLong);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Pleae enable your location", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

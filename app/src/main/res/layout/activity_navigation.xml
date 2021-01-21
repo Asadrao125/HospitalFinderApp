@@ -34,7 +34,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
+            android:background="@color/red"
             android:padding="15dp">
 
             <ImageView
@@ -54,7 +54,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/img_back"
                 android:maxLines="1"
-                android:text="Hospital Name"
+                android:text="Possible Routes"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

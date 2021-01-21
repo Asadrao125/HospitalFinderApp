@@ -15,15 +15,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
+import com.gexton.hospitalfinderapp.adapters.PharmacyArrayAdapter;
 import com.gexton.hospitalfinderapp.extras.RuoteAndTrackActivity;
 import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
 import com.gexton.hospitalfinderapp.api.ApiCallback;
@@ -55,7 +58,7 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
     ListView list_View;
     GoogleMap mMap;
     View view;
-    private HospitalArrayAdapter myAdapter;
+    private PharmacyArrayAdapter myAdapter;
     LinearLayout mapview_layout, listview_layout;
     RelativeLayout layout_mapview, layout_listview;
     public static ArrayList<HospitalBean> hospitalBeanArrayList;
@@ -122,6 +125,24 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
             }
         });
 
+        list_View.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Toast.makeText(getContext(), "" + i, Toast.LENGTH_SHORT).show();
+                GPSTracker gpsTracker = new GPSTracker(getContext());
+                if (gpsTracker.canGetLocation()) {
+                    Intent intent = new Intent(getContext(), RouteShowActivity.class);
+                    intent.putExtra("name", hospitalBeanArrayList.get(i).hospitalName);
+                    intent.putExtra("address", hospitalBeanArrayList.get(i).address);
+                    intent.putExtra("lat", hospitalBeanArrayList.get(i).lat);
+                    intent.putExtra("lng", hospitalBeanArrayList.get(i).lng);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -181,18 +202,11 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                             hospital_name.setText(hospitalBeanFromMArker.hospitalName);
                             tv_latitude.setText("" + hospitalBeanFromMArker.lat);
                             tv_longitude.setText("" + hospitalBeanFromMArker.lng);
-                            hospital_image.setImageResource(R.drawable.location);
+                            hospital_image.setImageResource(R.drawable.hospital);
                             tv_address.setText(hospitalBeanFromMArker.address);
                             btnTrack.setText("Track " + hospitalBeanFromMArker.hospitalName);
                             btnTrack.setTextColor(Color.BLACK);
                         }
-
-                        btnTrack.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                            }
-                        });
-
                         return v;
                     }
                 });
@@ -200,13 +214,22 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
-                        Intent intent = new Intent(getContext(), RouteShowActivity.class);
-                        intent.putExtra("name", hospitalBeanFromMArker.hospitalName);
-                        intent.putExtra("address", hospitalBeanFromMArker.address);
-                        intent.putExtra("lat", hospitalBeanFromMArker.lat);
-                        intent.putExtra("lng", hospitalBeanFromMArker.lng);
-                        startActivity(intent);
+                        GPSTracker gps = new GPSTracker(getContext());
+
+                        if (gps.canGetLocation()) {
+
+                            HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
+                            Intent intent = new Intent(getContext(), RouteShowActivity.class);
+                            intent.putExtra("name", hospitalBeanFromMArker.hospitalName);
+                            intent.putExtra("address", hospitalBeanFromMArker.address);
+                            intent.putExtra("lat", hospitalBeanFromMArker.lat);
+                            intent.putExtra("lng", hospitalBeanFromMArker.lng);
+                            startActivity(intent);
+
+                        } else {
+                            //gps.showSettingsAlert();
+                            Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -239,7 +262,7 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                     hospitalBeanArrayList.add(hospitalBean);
                 }
 
-                myAdapter = new HospitalArrayAdapter(getContext(), hospitalBeanArrayList);
+                myAdapter = new PharmacyArrayAdapter(getContext(), hospitalBeanArrayList);
                 //myAdapter.setAdapter and myAdapter.notifyDatasetChanged both do same work.
                 // myAdapter.notifyDataSetChanged();
                 list_View.setAdapter(myAdapter);
@@ -267,7 +290,8 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                 //Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
 
             } else {
-                gps.showSettingsAlert();
+                //gps.showSettingsAlert();
+                //Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
             }
         }
     }

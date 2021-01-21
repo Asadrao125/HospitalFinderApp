@@ -44,6 +44,7 @@ import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.gexton.hospitalfinderapp.R;
+import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -105,7 +106,7 @@ public class NavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.black, this.getTheme()));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
         }
 
         name = getIntent().getStringExtra("name");
@@ -164,15 +165,20 @@ public class NavigationActivity extends AppCompatActivity {
         bService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (view.getTag().equals("s")) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Log.d("registered", " on start service");
-                        startBackgroundService();
+                GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
+                if (gpsTracker.canGetLocation()) {
+                    if (view.getTag().equals("s")) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Log.d("registered", " on start service");
+                            startBackgroundService();
+                        } else {
+                            Toast.makeText(getBaseContext(), "service for pre lollipop will be available in next update", Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(getBaseContext(), "service for pre lollipop will be available in next update", Toast.LENGTH_LONG).show();
+                        stopBackgroundService();
                     }
                 } else {
-                    stopBackgroundService();
+                    Toast.makeText(getApplicationContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -189,7 +195,7 @@ public class NavigationActivity extends AppCompatActivity {
             }
         });*/
 
-        tvHospitalName.setText(name);
+        tvHospitalName.setText("Navigation");
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

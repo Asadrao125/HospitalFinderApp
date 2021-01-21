@@ -92,20 +92,30 @@
 
             <LinearLayout
                 android:id="@+id/image_layout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:id="@+id/img_drawer"
+                    android:padding="5dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_baseline_format_list_bulleted_24" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
                     android:src="@drawable/logo_splash" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/silent_mode"
+                android:id="@+id/find_hospital_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/image_layout"
@@ -132,10 +142,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/airplane_mode"
+                android:id="@+id/find_doctor_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/silent_mode"
+                android:layout_below="@+id/find_hospital_layout"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
@@ -158,10 +168,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/turn_on_wifi"
+                android:id="@+id/find_pharmacy_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/airplane_mode"
+                android:layout_below="@+id/find_doctor_layout"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
