@@ -144,7 +144,8 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
         Log.d("send broadcast", " as job started");
         LocalBroadcastManager.getInstance(getBaseContext()).sendBroadcast(jobStartedMessage);
         createNotification();
-        Toast.makeText(getApplicationContext(), "Location job service started", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Location job service started", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Navigation Started", Toast.LENGTH_SHORT).show();
     }
 
     private void buildGoogleApiClient() {
@@ -195,7 +196,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
     private void createNotification() {
 
         PendingIntent pI;
-        pI = PendingIntent.getActivity(this, 0, new Intent(this, DashbordActivity.class), 0);
+        pI = PendingIntent.getActivity(this, 0, new Intent(this, NavigationActivity.class), 0);
 
         Notification.Builder mBuilder = new Notification.Builder(getBaseContext());
         Notification notification = null;
@@ -258,7 +259,8 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
         Log.d("stop location ", " updates called");
         if (mLocationCallback != null && mFusedLocationProviderClient != null) {
             mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
-            Toast.makeText(getApplicationContext(), "Location job service stopped.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Location job service stopped.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Navigation Stoped", Toast.LENGTH_SHORT).show();
         }
         getSharedPreferences("track", MODE_PRIVATE).edit().putBoolean("isServiceStarted", false).apply();
         Intent jobStoppedMessage = new Intent(JOB_STATE_CHANGED);

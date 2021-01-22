@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
+        android:backgroundTint="@color/red"
         android:tag="s"
         android:text="Start Background Tracking" />
 

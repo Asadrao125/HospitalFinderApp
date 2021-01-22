@@ -45,12 +45,13 @@
         android:background="@color/white">
 
         <Button
+            android:textColor="@color/white"
             android:id="@+id/btn_navigate"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:backgroundTint="@color/red"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:background="@color/white"
             android:text="Navigate" />
 
         <TextView

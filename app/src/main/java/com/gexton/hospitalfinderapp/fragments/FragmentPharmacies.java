@@ -3,6 +3,7 @@ package com.gexton.hospitalfinderapp.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -49,6 +50,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class FragmentPharmacies extends Fragment implements ApiCallback {
     LinearLayout viewMap, viewList;
     ImageView img_map, img_list;
@@ -62,6 +65,7 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
     LinearLayout mapview_layout, listview_layout;
     RelativeLayout layout_mapview, layout_listview;
     public static ArrayList<HospitalBean> hospitalBeanArrayList;
+    String MY_PREFS_NAME = "HospitalFinder";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,10 +136,14 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                 GPSTracker gpsTracker = new GPSTracker(getContext());
                 if (gpsTracker.canGetLocation()) {
                     Intent intent = new Intent(getContext(), RouteShowActivity.class);
-                    intent.putExtra("name", hospitalBeanArrayList.get(i).hospitalName);
-                    intent.putExtra("address", hospitalBeanArrayList.get(i).address);
-                    intent.putExtra("lat", hospitalBeanArrayList.get(i).lat);
-                    intent.putExtra("lng", hospitalBeanArrayList.get(i).lng);
+                    SharedPreferences.Editor editor = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.putString("name", hospitalBeanArrayList.get(i).hospitalName);
+                    editor.putString("address", hospitalBeanArrayList.get(i).address);
+                    editor.putString("cLat", String.valueOf(lati));
+                    editor.putString("cLong", String.valueOf(longi));
+                    editor.putString("hLat", String.valueOf(hospitalBeanArrayList.get(i).lat));
+                    editor.putString("hLong", String.valueOf(hospitalBeanArrayList.get(i).lng));
+                    editor.apply();
                     startActivity(intent);
                 } else {
                     Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
@@ -202,7 +210,7 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                             hospital_name.setText(hospitalBeanFromMArker.hospitalName);
                             tv_latitude.setText("" + hospitalBeanFromMArker.lat);
                             tv_longitude.setText("" + hospitalBeanFromMArker.lng);
-                            hospital_image.setImageResource(R.drawable.hospital);
+                            hospital_image.setImageResource(R.drawable.pharmacy);
                             tv_address.setText(hospitalBeanFromMArker.address);
                             btnTrack.setText("Track " + hospitalBeanFromMArker.hospitalName);
                             btnTrack.setTextColor(Color.BLACK);
@@ -214,16 +222,21 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
+
                         GPSTracker gps = new GPSTracker(getContext());
 
                         if (gps.canGetLocation()) {
 
                             HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
                             Intent intent = new Intent(getContext(), RouteShowActivity.class);
-                            intent.putExtra("name", hospitalBeanFromMArker.hospitalName);
-                            intent.putExtra("address", hospitalBeanFromMArker.address);
-                            intent.putExtra("lat", hospitalBeanFromMArker.lat);
-                            intent.putExtra("lng", hospitalBeanFromMArker.lng);
+                            SharedPreferences.Editor editor = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                            editor.putString("name", hospitalBeanFromMArker.hospitalName);
+                            editor.putString("address", hospitalBeanFromMArker.address);
+                            editor.putString("cLat", String.valueOf(lati));
+                            editor.putString("cLong", String.valueOf(longi));
+                            editor.putString("hLat", String.valueOf(hospitalBeanFromMArker.lat));
+                            editor.putString("hLong", String.valueOf(hospitalBeanFromMArker.lng));
+                            editor.apply();
                             startActivity(intent);
 
                         } else {
@@ -232,7 +245,6 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                         }
                     }
                 });
-
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -53,6 +54,7 @@ public class RouteShowActivity extends AppCompatActivity {
     double total_distance, total_duration;
     TextView tv_duration, tv_distance;
     Button btn_navigate;
+    String MY_PREFS_NAME = "HospitalFinder";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +76,24 @@ public class RouteShowActivity extends AppCompatActivity {
             }
         });
 
-        name = getIntent().getStringExtra("name");
-        address = getIntent().getStringExtra("address");
-        hLat = getIntent().getDoubleExtra("lat", 0.0);
-        hLong = getIntent().getDoubleExtra("lng", 0.0);
         tv_distance = findViewById(R.id.tv_distance);
         tv_duration = findViewById(R.id.tv_duration);
         btn_navigate = findViewById(R.id.btn_navigate);
+
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        name = prefs.getString("name", "NoValue");
+        address = prefs.getString("address", "NoValue");
+        cLatitude = Double.parseDouble(prefs.getString("cLat", "NoValue"));
+        cLongitude = Double.parseDouble(prefs.getString("cLong", "NoValue"));
+        hLat = Double.parseDouble(prefs.getString("hLat", "NoValue"));
+        hLong = Double.parseDouble(prefs.getString("hLong", "NoValue"));
+
+        Log.d("Location_Data_Route", "onCreate: " + name);
+        Log.d("Location_Data_Route", "onCreate: " + address);
+        Log.d("Location_Data_Route", "onCreate: " + cLatitude);
+        Log.d("Location_Data_Route", "onCreate: " + cLongitude);
+        Log.d("Location_Data_Route", "onCreate: " + hLat);
+        Log.d("Location_Data_Route", "onCreate: " + hLong);
 
         setTitle("Possible Routes");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,19 +105,12 @@ public class RouteShowActivity extends AppCompatActivity {
                 GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
                 if (gpsTracker.canGetLocation()) {
                     Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("address", address);
-                    intent.putExtra("cLat", cLatitude);
-                    intent.putExtra("cLong", cLongitude);
-                    intent.putExtra("hLat", hLat);
-                    intent.putExtra("hLong", hLong);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Pleae enable your location", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
     public void getCurrentLocation() {
@@ -214,6 +220,9 @@ public class RouteShowActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 }

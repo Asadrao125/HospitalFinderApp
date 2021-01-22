@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -99,6 +100,7 @@ public class NavigationActivity extends AppCompatActivity {
     TextView tvHospitalName;
     ImageView imgBack;
     String serverKey = "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8";
+    String MY_PREFS_NAME = "HospitalFinder";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +111,20 @@ public class NavigationActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
         }
 
-        name = getIntent().getStringExtra("name");
-        address = getIntent().getStringExtra("address");
-        hLat = getIntent().getDoubleExtra("hLat", 0.0);
-        hLong = getIntent().getDoubleExtra("hLong", 0.0);
-        cLatitude = getIntent().getDoubleExtra("cLat", 0.0);
-        cLongitude = getIntent().getDoubleExtra("cLong", 0.0);
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        name = prefs.getString("name", "NoValue");
+        address = prefs.getString("address", "NoValue");
+        cLatitude = Double.parseDouble(prefs.getString("cLat", "NoValue"));
+        cLongitude = Double.parseDouble(prefs.getString("cLong", "NoValue"));
+        hLat = Double.parseDouble(prefs.getString("hLat", "NoValue"));
+        hLong = Double.parseDouble(prefs.getString("hLong", "NoValue"));
+
+        Log.d("Location_Data_Nav", "onCreate: " + name);
+        Log.d("Location_Data_Nav", "onCreate: " + address);
+        Log.d("Location_Data_Nav", "onCreate: " + cLatitude);
+        Log.d("Location_Data_Nav", "onCreate: " + cLongitude);
+        Log.d("Location_Data_Nav", "onCreate: " + hLat);
+        Log.d("Location_Data_Nav", "onCreate: " + hLong);
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         button = (Button) findViewById(R.id.b_action);

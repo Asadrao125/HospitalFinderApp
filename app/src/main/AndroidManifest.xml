@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.HospitalFinderApp">
+        <activity android:name=".SearchActivity"></activity>
         <activity
             android:name=".RouteShowActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
+            android:theme="@style/Theme.Toolbar" />
         <activity android:name=".tracking_files.RuoteTestActivity" />
         <activity android:name=".tracking_files.NavigationActivity" />
         <activity
@@ -43,12 +44,11 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
-
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 </manifest>
