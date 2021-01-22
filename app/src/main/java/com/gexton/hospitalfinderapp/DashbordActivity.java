@@ -11,13 +11,16 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -35,6 +38,7 @@ import com.gexton.hospitalfinderapp.fragments.FragmentHospital;
 import com.gexton.hospitalfinderapp.fragments.FragmentPharmacies;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
+import com.google.android.gms.maps.model.Dash;
 import com.google.android.material.tabs.TabLayout;
 import com.loopj.android.http.RequestParams;
 
@@ -49,10 +53,10 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    RelativeLayout main_view;
     ImageView img_drawer, img_search, img_drawer2;
     AutoCompleteTextView actv;
-    RelativeLayout layout_search;
+    public RelativeLayout layout_search;
+    RelativeLayout contentFrame;
 
     FragmentHospital fragmentHospital;
     FragmentDoctors fragmentDoctors;
@@ -67,6 +71,8 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     ApiCallback apiCallback;
 
     LinearLayout find_hospital_layout, find_doctor_layout, find_pharmacy_layout, share_to_a_friend, rate_app;
+
+    OnSwipeTouchListener onSwipeTouchListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +89,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
         dl = (DrawerLayout) findViewById(R.id.activity_main);
-        main_view = findViewById(R.id.main_view);
-        img_drawer = findViewById(R.id.img_drawer);
         find_hospital_layout = findViewById(R.id.find_hospital_layout);
         find_doctor_layout = findViewById(R.id.find_doctor_layout);
         find_pharmacy_layout = findViewById(R.id.find_pharmacy_layout);
@@ -94,8 +98,18 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         arrayListName = new ArrayList<>();
         apiCallback = DashbordActivity.this;
         img_drawer2 = findViewById(R.id.img_drawer2);
+        img_drawer = findViewById(R.id.img_drawer);
         actv = findViewById(R.id.actv);
         layout_search = findViewById(R.id.layout_search);
+        contentFrame = findViewById(R.id.contentFrame);
+
+        contentFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout_search.setVisibility(View.GONE);
+                System.out.println("Click");
+            }
+        });
 
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +118,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
                 /*actv.setVisibility(View.VISIBLE);
                 img_search.setVisibility(View.GONE);*/
                 layout_search.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -180,7 +195,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         });
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Make toolbar show navigation button (i.e back button with arrow icon)
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_format_list_bulleted_24);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -204,7 +219,22 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         getCurrentLocation();
 
-        getNearbyHospitalsList();
+        if (viewPager.getCurrentItem() == 0) {
+            getNearbyHospitalsList("hospital");
+        } else if (viewPager.getCurrentItem() == 1) {
+            getNearbyHospitalsList("doctor");
+        } else if (viewPager.getCurrentItem() == 2) {
+            getNearbyHospitalsList("pharmacy");
+        }
+        viewPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout_search.setVisibility(View.GONE);
+                System.out.println("Click VP");
+            }
+        });
+
+        onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.layout_search));
 
     }
 
@@ -221,7 +251,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (t.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
@@ -268,6 +297,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, arrayListName);
                 actv.setAdapter(adapter);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -276,7 +306,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
     public void getCurrentLocation() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(DashbordActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
             GPSTracker gps = new GPSTracker(getApplicationContext());
             if (gps.canGetLocation()) {
@@ -289,7 +319,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         Log.d("name_list", "getCurrentLocation: Current Location_method");
     }
 
-    private void getNearbyHospitalsList() {
+    private void getNearbyHospitalsList(String type) {
         String lat = String.valueOf(lati);
         String lng = String.valueOf(longi);
 
@@ -297,7 +327,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         //requestParams.put("location", "25.3689856,68.3474944");
         requestParams.put("location", lat + "," + lng);
         requestParams.put("radius", "1500");
-        requestParams.put("type", "hospital");
+        requestParams.put("type", type);
         requestParams.put("key", "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8");
 
         ApiManager apiManager = new ApiManager(DashbordActivity.this, "get", ApiManager.API_HOME_LIST, requestParams, apiCallback);
@@ -305,6 +335,109 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         Log.d("name_list", "getNearbyHospitalsList: get near by hospital method");
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        layout_search.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
+
+    static class OnSwipeTouchListener implements View.OnTouchListener {
+        private final GestureDetector gestureDetector;
+        Context context;
+
+        View mav;
+
+        OnSwipeTouchListener(Context ctx, View mainView) {
+            gestureDetector = new GestureDetector(ctx, new GestureListener());
+            mainView.setOnTouchListener(this);
+            context = ctx;
+
+            mav = mainView;
+
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return gestureDetector.onTouchEvent(event);
+        }
+
+        public class GestureListener extends GestureDetector.SimpleOnGestureListener {
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                boolean result = false;
+                try {
+                    float diffY = e2.getY() - e1.getY();
+                    float diffX = e2.getX() - e1.getX();
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX > 0) {
+                                onSwipeRight();
+                            } else {
+                                onSwipeLeft();
+                            }
+                            result = true;
+                        }
+                    } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+                            onSwipeBottom();
+                        } else {
+                            onSwipeTop();
+                        }
+                        result = true;
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                return result;
+            }
+        }
+
+        void onSwipeRight() {
+            mav.setVisibility(View.GONE);
+            this.onSwipe.swipeRight();
+        }
+
+        void onSwipeLeft() {
+            mav.setVisibility(View.GONE);
+            this.onSwipe.swipeLeft();
+        }
+
+        void onSwipeTop() {
+            mav.setVisibility(View.GONE);
+            this.onSwipe.swipeTop();
+        }
+
+        void onSwipeBottom() {
+            mav.setVisibility(View.GONE);
+            this.onSwipe.swipeBottom();
+        }
+
+        interface onSwipeListener {
+            void swipeRight();
+
+            void swipeTop();
+
+            void swipeBottom();
+
+            void swipeLeft();
+        }
+
+        onSwipeListener onSwipe;
     }
 
 }

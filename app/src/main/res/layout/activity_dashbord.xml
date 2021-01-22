@@ -8,67 +8,9 @@
     tools:context=".DashbordActivity">
 
     <RelativeLayout
-        android:id="@+id/main_view"
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:id="@+id/layout_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/red"
-            android:visibility="gone">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/actv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/detail"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/white"
-                    android:drawableRight="@drawable/search_red"
-                    android:hint="Search for..."
-                    android:padding="10dp" />
-
-                <ImageView
-                    android:id="@+id/img_drawer2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_format_list_bulleted_24" />
-
-                <TextView
-                    android:id="@+id/detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_title"
-                    android:layout_marginTop="30dp"
-                    android:text="Find the nearby Hospitals, Doctors Clinic or Pharmacies in your city."
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="Hospital Finder"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-            </RelativeLayout>
-
-        </RelativeLayout>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -120,6 +62,60 @@
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"
             app:tabTextColor="@android:color/black" />
+
+        <RelativeLayout
+            android:id="@+id/layout_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
+
+                <AutoCompleteTextView
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:id="@+id/actv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/detail"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/white"
+                    android:drawableRight="@drawable/search_red"
+                    android:hint="Search for..."
+                    android:padding="10dp" />
+
+                <ImageView
+                    android:id="@+id/img_drawer2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_format_list_bulleted_24" />
+
+                <TextView
+                    android:id="@+id/detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_marginTop="30dp"
+                    android:text="Find the nearby Hospitals, Doctors Clinic or Pharmacies in your city."
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Hospital Finder"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
