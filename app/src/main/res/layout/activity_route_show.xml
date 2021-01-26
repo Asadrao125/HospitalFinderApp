@@ -61,9 +61,11 @@
             android:layout_below="@+id/tv_distance"
             android:background="@color/white"
             android:text="Duration"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/black" />
 
         <TextView
+            android:fontFamily="@font/roboto_regular"
             android:id="@+id/tv_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

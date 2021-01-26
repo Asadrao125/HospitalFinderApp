@@ -295,7 +295,6 @@ public class FragmentHospital extends Fragment implements ApiCallback {
 
         } else {
             GPSTracker gps = new GPSTracker(getContext());
-
             if (gps.canGetLocation()) {
 
                 lati = gps.getLatitude();
@@ -303,10 +302,15 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                 //Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
 
             } else {
-                gps.enableLocationPopup();
-                //Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+                //gps.enableLocationPopup();
+                Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
 }

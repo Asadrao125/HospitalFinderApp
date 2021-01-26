@@ -22,6 +22,7 @@ import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -103,46 +104,28 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         layout_search = findViewById(R.id.layout_search);
         contentFrame = findViewById(R.id.contentFrame);
 
-        contentFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layout_search.setVisibility(View.GONE);
-                System.out.println("Click");
-            }
-        });
-
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                /*actv.setVisibility(View.VISIBLE);
-                img_search.setVisibility(View.GONE);*/
                 layout_search.setVisibility(View.VISIBLE);
-
+                actv.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(actv, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 
+        //Animation Sliding Activity
+        dl.setScrimColor(Color.TRANSPARENT);
         t = new ActionBarDrawerToggle(this, dl, toolbar, R.string.Open, R.string.Close) {
-            //private float scaleFactor = 4f;
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-
-                /*main_view.setTranslationX(slideOffset * drawerView.getWidth());
-                dl.setScrimColor(Color.TRANSPARENT);
-                dl.bringChildToFront(drawerView);
-                dl.requestLayout();*/
-
-                /*float slideX = drawerView.getWidth() * slideOffset;
-                main_view.setTranslationX(slideX);
-                main_view.setScaleX(1 - (slideOffset / scaleFactor));
-                main_view.setScaleY(1 - (slideOffset / scaleFactor));*/
-
+                float slideX = drawerView.getWidth() * slideOffset;
+                contentFrame.setTranslationX(slideX);
             }
-        };
+        };//Animation Sliding Ends here
 
-        dl.setDrawerListener(t);
         dl.addDrawerListener(t);
         t.syncState();
         toolbar = findViewById(R.id.toolbar);
@@ -219,23 +202,44 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         getCurrentLocation();
 
-        if (viewPager.getCurrentItem() == 0) {
-            getNearbyHospitalsList("hospital");
-        } else if (viewPager.getCurrentItem() == 1) {
-            getNearbyHospitalsList("doctor");
-        } else if (viewPager.getCurrentItem() == 2) {
-            getNearbyHospitalsList("pharmacy");
-        }
-        viewPager.setOnClickListener(new View.OnClickListener() {
+        getNearbyHospitalsList("hospital");
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                layout_search.setVisibility(View.GONE);
-                System.out.println("Click VP");
+            public void onTabSelected(TabLayout.Tab tab) {
+                int current_tab = tab.getPosition();
+                if (current_tab == 0) {
+                    getNearbyHospitalsList("hospital");
+                } else if (current_tab == 1) {
+                    getNearbyHospitalsList("doctor");
+                } else if (current_tab == 2) {
+                    getNearbyHospitalsList("pharmacy");
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
-        onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.layout_search));
+        onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.layout_search), findViewById(R.id.actv));
 
+        img_drawer2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dl.isDrawerOpen(GravityCompat.START)) {
+                    dl.closeDrawers();
+                } else {
+                    dl.openDrawer(GravityCompat.START);
+                }
+            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -282,20 +286,17 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
     @Override
     public void onApiResponce(int httpStCode, int successOrFail, String apiName, String apiResponce) {
-        Log.d("name_list", "onApiResponce1: ");
         if (apiName.equalsIgnoreCase(ApiManager.API_HOME_LIST)) {
-            Log.d("name_list", "onApiResponce2: ");
             try {
-                Log.d("name_list", "onApiResponce3: ");
                 JSONObject jsonObject = new JSONObject(apiResponce);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
                 Log.d("name_list", "Json Array Response: " + jsonArray);
+                arrayListName.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     String name = jsonArray.getJSONObject(i).getString("name");
                     arrayListName.add(name);
-                    Log.d("name_list", "onApiResponce4: " + name);
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, arrayListName);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayListName);
                 actv.setAdapter(adapter);
 
             } catch (JSONException e) {
@@ -308,7 +309,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(DashbordActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
-            GPSTracker gps = new GPSTracker(getApplicationContext());
+            GPSTracker gps = new GPSTracker(DashbordActivity.this);
             if (gps.canGetLocation()) {
                 lati = gps.getLatitude();
                 longi = gps.getLongitude();
@@ -324,7 +325,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         String lng = String.valueOf(longi);
 
         RequestParams requestParams = new RequestParams();
-        //requestParams.put("location", "25.3689856,68.3474944");
         requestParams.put("location", lat + "," + lng);
         requestParams.put("radius", "1500");
         requestParams.put("type", type);
@@ -343,23 +343,18 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         layout_search.setVisibility(View.GONE);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
-    }
-
     static class OnSwipeTouchListener implements View.OnTouchListener {
         private final GestureDetector gestureDetector;
         Context context;
-
         View mav;
+        View ac;
 
-        OnSwipeTouchListener(Context ctx, View mainView) {
+        OnSwipeTouchListener(Context ctx, View mainView, View ac1) {
             gestureDetector = new GestureDetector(ctx, new GestureListener());
             mainView.setOnTouchListener(this);
             context = ctx;
-
             mav = mainView;
+            ac = ac1;
 
         }
 
@@ -409,21 +404,29 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         void onSwipeRight() {
             mav.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(ac.getWindowToken(), 0);
             this.onSwipe.swipeRight();
         }
 
         void onSwipeLeft() {
             mav.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(ac.getWindowToken(), 0);
             this.onSwipe.swipeLeft();
         }
 
         void onSwipeTop() {
             mav.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(ac.getWindowToken(), 0);
             this.onSwipe.swipeTop();
         }
 
         void onSwipeBottom() {
             mav.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(ac.getWindowToken(), 0);
             this.onSwipe.swipeBottom();
         }
 

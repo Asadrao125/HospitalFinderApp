@@ -70,7 +70,7 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
     RelativeLayout layout_mapview, layout_listview;
     public static ArrayList<HospitalBean> hospitalBeanArrayList;
     String MY_PREFS_NAME = "HospitalFinder";
-    public ArrayList<String> arrayListName;
+    //public ArrayList<String> arrayListName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
         mapview_layout = view.findViewById(R.id.mapview_layout);
         listview_layout = view.findViewById(R.id.listview_layout);
         list_View = view.findViewById(R.id.list_View);
-        arrayListName = new ArrayList<>();
+        //arrayListName = new ArrayList<>();
 
         // For listener
         mapview_layout = view.findViewById(R.id.mapview_layout);
@@ -280,7 +280,7 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
 
                     HospitalBean hospitalBean = new HospitalBean(name, image, latitude, longitude, address);
                     hospitalBeanArrayList.add(hospitalBean);
-                    arrayListName.add(name);
+                    //arrayListName.add(name);
                 }
 
                 myAdapter = new DoctorArrayAdapter(getContext(), hospitalBeanArrayList);
@@ -324,12 +324,10 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
                 }
                 break;
         }
-
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        plotMarkersOnMap();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
     }
 }

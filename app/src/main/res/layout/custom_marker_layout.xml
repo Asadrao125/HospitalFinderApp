@@ -37,6 +37,7 @@
                 android:src="@mipmap/ic_launcher" />
 
             <TextView
+                android:fontFamily="@font/roboto_bold"
                 android:id="@+id/hospital_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,6 +46,7 @@
                 android:textColor="@color/black" />
 
             <TextView
+                android:fontFamily="@font/roboto_regular"
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,6 +63,7 @@
             android:layout_below="@id/img_layout">
 
             <TextView
+                android:fontFamily="@font/roboto_regular"
                 android:id="@+id/tv_latitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,6 +71,7 @@
                 android:visibility="gone" />
 
             <TextView
+                android:fontFamily="@font/roboto_regular"
                 android:id="@+id/tv_longitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

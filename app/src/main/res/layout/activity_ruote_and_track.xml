@@ -15,6 +15,7 @@
         android:text="Start Navigation" />
 
     <TextView
+        android:fontFamily="@font/roboto_regular"
         android:id="@+id/tvDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

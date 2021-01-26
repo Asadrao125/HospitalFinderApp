@@ -308,4 +308,9 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
 }
