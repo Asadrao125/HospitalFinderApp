@@ -20,27 +20,24 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class SearchAdapter extends BaseAdapter implements Filterable {
+public class SearchAdapter extends BaseAdapter {
 
     private List<HospitalBean> itemsModelsl;
-    private List<HospitalBean> itemsModelListFiltered;
     private Context context;
 
     public SearchAdapter(@NonNull Context context, List<HospitalBean> itemsModelsl) {
-        //super(context, R.layout.item_hospitals, itemsModelsl);
         this.itemsModelsl = itemsModelsl;
-        this.itemsModelListFiltered = itemsModelsl;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return itemsModelListFiltered.size();
+        return itemsModelsl.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return itemsModelListFiltered.get(i);
+        return itemsModelsl.get(i);
     }
 
     @Override
@@ -56,48 +53,10 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         TextView tv_hospital_lat = view.findViewById(R.id.tv_hospital_lat);
         TextView tv_hospital_lng = view.findViewById(R.id.tv_hospital_lng);
         TextView tv_hospital_address = view.findViewById(R.id.tv_hospital_address);
-        tv_hospital_name.setText(itemsModelListFiltered.get(position).hospitalName);
-        tv_hospital_lat.setText("Latitude: " + itemsModelListFiltered.get(position).lat);
-        tv_hospital_lng.setText("Longitude: " + itemsModelListFiltered.get(position).lng);
-        tv_hospital_address.setText(itemsModelListFiltered.get(position).address);
+        tv_hospital_name.setText(itemsModelsl.get(position).hospitalName);
+        tv_hospital_lat.setText("Latitude: " + itemsModelsl.get(position).lat);
+        tv_hospital_lng.setText("Longitude: " + itemsModelsl.get(position).lng);
+        tv_hospital_address.setText(itemsModelsl.get(position).address);
         return view;
-    }
-
-    @NonNull
-    @Override
-    public Filter getFilter() {
-        Filter filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if (constraint == null || constraint.length() == 0) {
-                    filterResults.count = itemsModelsl.size();
-                    filterResults.values = itemsModelsl;
-                } else {
-                    List<HospitalBean> resultsModel = new ArrayList<>();
-                    String searchStr = constraint.toString().toLowerCase();
-
-                    /*if (itemsModel.hospitalName.contains(searchStr) || itemsModel.address.contains(searchStr))*/
-
-                    for (HospitalBean itemsModel : itemsModelsl) {
-                        if (itemsModel.hospitalName.contains(searchStr)) {
-                            resultsModel.add(itemsModel);
-
-                        }
-                        filterResults.count = resultsModel.size();
-                        filterResults.values = resultsModel;
-                    }
-                }
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-
-                itemsModelListFiltered = (List<HospitalBean>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-        return filter;
     }
 }

@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.adapters.ActvAdapter;
 import com.gexton.hospitalfinderapp.adapters.SearchAdapter;
 import com.gexton.hospitalfinderapp.adapters.ViewPagerAdapter;
 import com.gexton.hospitalfinderapp.api.ApiCallback;
@@ -58,6 +60,9 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     AutoCompleteTextView actv;
     public RelativeLayout layout_search;
     RelativeLayout contentFrame;
+
+    ActvAdapter actvAdapter;
+    ArrayList<HospitalBean> hospitalList;
 
     FragmentHospital fragmentHospital;
     FragmentDoctors fragmentDoctors;
@@ -103,6 +108,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         actv = findViewById(R.id.actv);
         layout_search = findViewById(R.id.layout_search);
         contentFrame = findViewById(R.id.contentFrame);
+        hospitalList = new ArrayList<>();
 
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +246,14 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
                 }
             }
         });
+
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(DashbordActivity.this, "" + i, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -291,13 +305,22 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
                 JSONObject jsonObject = new JSONObject(apiResponce);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
                 Log.d("name_list", "Json Array Response: " + jsonArray);
-                arrayListName.clear();
+                hospitalList.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
+
                     String name = jsonArray.getJSONObject(i).getString("name");
-                    arrayListName.add(name);
+                    String image = jsonArray.getJSONObject(i).getString("icon");
+                    Double latitude = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                    double longitude = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+                    String address = jsonArray.getJSONObject(i).getString("vicinity");
+
+                    HospitalBean hospitalBean = new HospitalBean(name, image, latitude, longitude, address);
+                    hospitalList.add(hospitalBean);
+
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayListName);
-                actv.setAdapter(adapter);
+
+                actvAdapter = new ActvAdapter(DashbordActivity.this, R.layout.item_actv_search, hospitalList);
+                actv.setAdapter(actvAdapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();
