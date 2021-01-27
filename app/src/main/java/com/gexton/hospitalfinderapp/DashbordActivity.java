@@ -18,6 +18,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
@@ -82,6 +84,8 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
     OnSwipeTouchListener onSwipeTouchListener;
 
+    SharedPreferences.Editor editor2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +115,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         layout_search = findViewById(R.id.layout_search);
         contentFrame = findViewById(R.id.contentFrame);
         hospitalList = new ArrayList<>();
-
+        editor2 = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,6 +189,30 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
             }
         });
 
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int current_tab = tab.getPosition();
+                if (current_tab == 0) {
+                    getNearbyHospitalsList("hospital");
+                } else if (current_tab == 1) {
+                    getNearbyHospitalsList("doctor");
+                } else if (current_tab == 2) {
+                    getNearbyHospitalsList("pharmacy");
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_format_list_bulleted_24);
@@ -212,30 +240,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         getNearbyHospitalsList("hospital");
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int current_tab = tab.getPosition();
-                if (current_tab == 0) {
-                    getNearbyHospitalsList("hospital");
-                } else if (current_tab == 1) {
-                    getNearbyHospitalsList("doctor");
-                } else if (current_tab == 2) {
-                    getNearbyHospitalsList("pharmacy");
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
         onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.layout_search), findViewById(R.id.actv));
 
         img_drawer2.setOnClickListener(new View.OnClickListener() {
@@ -253,24 +257,16 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HospitalBean hospitalBean = (HospitalBean) adapterView.getItemAtPosition(i);
-                String hospitalName = hospitalBean.hospitalName;
-                String address = hospitalBean.address;
-                double lat = hospitalBean.lat;
-                double lng = hospitalBean.lng;
-
                 GPSTracker gpsTracker = new GPSTracker(DashbordActivity.this);
                 if (gpsTracker.canGetLocation()) {
-                    Intent intent = new Intent(DashbordActivity.this, RouteShowActivity.class);
                     SharedPreferences.Editor editor = DashbordActivity.this.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                    editor.putString("name", hospitalBean.hospitalName);
-                    editor.putString("address", hospitalBean.address);
-                    editor.putString("cLat", String.valueOf(lati));
-                    editor.putString("cLong", String.valueOf(longi));
-                    editor.putString("hLat", String.valueOf(hospitalBean.lat));
-                    editor.putString("hLong", String.valueOf(hospitalBean.lng));
-                    editor.apply();
+                    editor.putString("newLat", String.valueOf(hospitalBean.lat));
+                    editor.putString("newLng", String.valueOf(hospitalBean.lng));
+                    editor.commit();
+                    System.out.println("-- actv click lat " + hospitalBean.lat + " , lng : " + hospitalBean.lng);
+                    Intent intent = new Intent(getApplicationContext(), DashbordActivity.class);
                     startActivity(intent);
-                    Toast.makeText(DashbordActivity.this, "Name: " + hospitalName + "\nAddress: " + address + "\nHospital lat: " + lat + "\nHospital Lng: " + lng + "\n Current Lat: " + lati + "\n Current Lng: " + longi, Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     Toast.makeText(DashbordActivity.this, "Please enable your location", Toast.LENGTH_SHORT).show();
                 }
@@ -335,7 +331,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
                     String name = jsonArray.getJSONObject(i).getString("name");
                     String image = jsonArray.getJSONObject(i).getString("icon");
-                    Double latitude = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                    double latitude = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                     double longitude = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
                     String address = jsonArray.getJSONObject(i).getString("vicinity");
 
@@ -346,6 +342,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
                 actvAdapter = new ActvAdapter(DashbordActivity.this, R.layout.item_actv_search, hospitalList);
                 actv.setAdapter(actvAdapter);
+                System.out.println(" -- actv adapter refresh");
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -490,9 +487,4 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         onSwipeListener onSwipe;
     }
-
-    private void highlightMarker(double latitude, double longitude, int position) {
-
-    }
-
 }

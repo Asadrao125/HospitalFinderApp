@@ -40,7 +40,7 @@ public class ApiManager {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String content = new String(responseBody);
-                            System.out.println("-- Responce: success : " + content);
+                            //System.out.println("-- Responce: success : " + content);
                             apiCallback.onApiResponce(statusCode, 1, apiName, content);
 
                         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class ApiManager {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         try {
                             String content = new String(responseBody);
-                            System.out.println("-- Responce: failure : " + content);
+                            //System.out.println("-- Responce: failure : " + content);
                             apiCallback.onApiResponce(statusCode, 0, apiName, content);
 
                         } catch (Exception e) {

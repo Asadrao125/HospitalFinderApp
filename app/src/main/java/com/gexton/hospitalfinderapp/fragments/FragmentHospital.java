@@ -12,6 +12,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.DashbordActivity;
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
@@ -32,12 +35,14 @@ import com.gexton.hospitalfinderapp.api.ApiCallback;
 import com.gexton.hospitalfinderapp.api.ApiManager;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.RequestParams;
@@ -65,7 +70,8 @@ public class FragmentHospital extends Fragment implements ApiCallback {
     RelativeLayout layout_mapview, layout_listview;
     public static ArrayList<HospitalBean> hospitalBeanArrayList;
     String MY_PREFS_NAME = "HospitalFinder";
-    double newLat = 25.3678669, newLng = 68.36734799999999;
+    Marker marker;
+    double newLat, newLng;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -178,6 +184,9 @@ public class FragmentHospital extends Fragment implements ApiCallback {
 
     public void plotMarkersOnMap() {
         if (mMap != null) {
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
             for (int i = 0; i < hospitalBeanArrayList.size(); i++) {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(new LatLng(hospitalBeanArrayList.get(i).lat, hospitalBeanArrayList.get(i).lng))
@@ -186,31 +195,35 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                         .anchor(0.5f, 0.5f)
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital));
 
-                Marker marker = mMap.addMarker(markerOptions);
+                marker = mMap.addMarker(markerOptions);
                 marker.setTag(hospitalBeanArrayList.get(i));//tag set kar dya
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanArrayList.get(i).lat, hospitalBeanArrayList.get(i).lng), 12.5f));
+
+                builder.include(marker.getPosition());//add marker to latlong bounds
 
                 //Setting Custom Info Window
                 setInfoAdapter();
                 //Setting Click Listener on Info Window
                 infoWindowListener();
 
-                //When Lat Lng of Specific marker matches to List , it will open its info window
-                if (hospitalBeanArrayList.get(i).lat.equals(newLat) && hospitalBeanArrayList.get(i).lng.equals(newLng)) {
-                    Toast.makeText(getContext(), "Location Matched\nLat: " + newLat + "\nLng: " + newLng, Toast.LENGTH_SHORT).show();
-                    marker.showInfoWindow();
-                }
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newLat, newLng), 15.0f));
+                SharedPreferences prefs = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                if (!TextUtils.isEmpty(prefs.getString("newLat", "NoValue")) && !prefs.getString("newLat", "NoValue").equals("NoValue")) {
+                    newLat = Double.parseDouble(prefs.getString("newLat", "NoValue"));
+                    newLng = Double.parseDouble(prefs.getString("newLng", "NoValue"));
 
-                int finalI = i;
-                //Animate Camera To Show All Markers When Click on Map
-                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanArrayList.get(finalI).lat, hospitalBeanArrayList.get(finalI).lng), 12.5f));
+                    //When Lat Lng of Specific marker matches to List , it will open its info window
+                    if (hospitalBeanArrayList.get(i).lat.equals(newLat) && hospitalBeanArrayList.get(i).lng.equals(newLng)) {
+                        marker.showInfoWindow();
                     }
-                });
-            }
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newLat, newLng), 15.0f));
+
+                }
+
+            }//end for loop
+
+            LatLngBounds bounds = builder.build();
+            int padding = 50;
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            mMap.animateCamera(cu);
 
             //Animate camera and Show Info Window When Click On Marker
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -223,6 +236,12 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                 }
             });
 
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    mMap.animateCamera(cu);
+                }
+            });
         }
     }
 
@@ -286,6 +305,26 @@ public class FragmentHospital extends Fragment implements ApiCallback {
         });
     }
 
+    public void getCurrentLocation() {
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+        } else {
+            GPSTracker gps = new GPSTracker(getContext());
+            if (gps.canGetLocation()) {
+
+                lati = gps.getLatitude();
+                longi = gps.getLongitude();
+                //Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
+
+            } else {
+                //gps.enableLocationPopup();
+                Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public void onApiResponce(int httpStCode, int successOrFail, String apiName, String apiResponce) {
 
@@ -322,31 +361,6 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void getCurrentLocation() {
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        } else {
-            GPSTracker gps = new GPSTracker(getContext());
-            if (gps.canGetLocation()) {
-
-                lati = gps.getLatitude();
-                longi = gps.getLongitude();
-                //Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
-
-            } else {
-                //gps.enableLocationPopup();
-                Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
     }
 
 }
