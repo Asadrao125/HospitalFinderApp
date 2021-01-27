@@ -65,6 +65,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
     RelativeLayout layout_mapview, layout_listview;
     public static ArrayList<HospitalBean> hospitalBeanArrayList;
     String MY_PREFS_NAME = "HospitalFinder";
+    double newLat = 25.3678669, newLng = 68.36734799999999;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -189,65 +190,100 @@ public class FragmentHospital extends Fragment implements ApiCallback {
                 marker.setTag(hospitalBeanArrayList.get(i));//tag set kar dya
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanArrayList.get(i).lat, hospitalBeanArrayList.get(i).lng), 12.5f));
 
-                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                    @Override
-                    public View getInfoWindow(Marker marker) {
-                        return null;
-                    }
+                //Setting Custom Info Window
+                setInfoAdapter();
+                //Setting Click Listener on Info Window
+                infoWindowListener();
 
-                    @Override
-                    public View getInfoContents(Marker marker) {
-                        View v = getLayoutInflater().inflate(R.layout.custom_marker_layout, null);
-                        ImageView hospital_image = v.findViewById(R.id.hospital_image);
-                        TextView hospital_name = v.findViewById(R.id.hospital_name);
-                        TextView tv_latitude = v.findViewById(R.id.tv_latitude);
-                        TextView tv_longitude = v.findViewById(R.id.tv_longitude);
-                        TextView tv_address = v.findViewById(R.id.tv_address);
-                        Button btnTrack = v.findViewById(R.id.btnTrack);
-                        if (marker.getTag() != null) {
-                            HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
-                            hospital_name.setText(hospitalBeanFromMArker.hospitalName);
-                            tv_latitude.setText("" + hospitalBeanFromMArker.lat);
-                            tv_longitude.setText("" + hospitalBeanFromMArker.lng);
-                            hospital_image.setImageResource(R.drawable.hospital);
-                            tv_address.setText(hospitalBeanFromMArker.address);
-                            btnTrack.setText("Track " + hospitalBeanFromMArker.hospitalName);
-                            btnTrack.setTextColor(Color.BLACK);
-                        }
+                //When Lat Lng of Specific marker matches to List , it will open its info window
+                if (hospitalBeanArrayList.get(i).lat.equals(newLat) && hospitalBeanArrayList.get(i).lng.equals(newLng)) {
+                    Toast.makeText(getContext(), "Location Matched\nLat: " + newLat + "\nLng: " + newLng, Toast.LENGTH_SHORT).show();
+                    marker.showInfoWindow();
+                }
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newLat, newLng), 15.0f));
 
-                        return v;
+                int finalI = i;
+                //Animate Camera To Show All Markers When Click on Map
+                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanArrayList.get(finalI).lat, hospitalBeanArrayList.get(finalI).lng), 12.5f));
                     }
                 });
-
-                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
-
-                        GPSTracker gps = new GPSTracker(getContext());
-
-                        if (gps.canGetLocation()) {
-
-                            HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
-                            Intent intent = new Intent(getContext(), RouteShowActivity.class);
-                            SharedPreferences.Editor editor = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                            editor.putString("name", hospitalBeanFromMArker.hospitalName);
-                            editor.putString("address", hospitalBeanFromMArker.address);
-                            editor.putString("cLat", String.valueOf(lati));
-                            editor.putString("cLong", String.valueOf(longi));
-                            editor.putString("hLat", String.valueOf(hospitalBeanFromMArker.lat));
-                            editor.putString("hLong", String.valueOf(hospitalBeanFromMArker.lng));
-                            editor.apply();
-                            startActivity(intent);
-
-                        } else {
-                            //gps.showSettingsAlert();
-                            Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
             }
+
+            //Animate camera and Show Info Window When Click On Marker
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanFromMArker.lat, hospitalBeanFromMArker.lng), 15.0f));
+                    marker.showInfoWindow();
+                    return true;
+                }
+            });
+
         }
+    }
+
+    private void infoWindowListener() {
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+
+                GPSTracker gps = new GPSTracker(getContext());
+
+                if (gps.canGetLocation()) {
+
+                    HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
+                    Intent intent = new Intent(getContext(), RouteShowActivity.class);
+                    SharedPreferences.Editor editor = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.putString("name", hospitalBeanFromMArker.hospitalName);
+                    editor.putString("address", hospitalBeanFromMArker.address);
+                    editor.putString("cLat", String.valueOf(lati));
+                    editor.putString("cLong", String.valueOf(longi));
+                    editor.putString("hLat", String.valueOf(hospitalBeanFromMArker.lat));
+                    editor.putString("hLong", String.valueOf(hospitalBeanFromMArker.lng));
+                    editor.apply();
+                    startActivity(intent);
+
+                } else {
+                    //gps.showSettingsAlert();
+                    Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setInfoAdapter() {
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = getLayoutInflater().inflate(R.layout.custom_marker_layout, null);
+                ImageView hospital_image = v.findViewById(R.id.hospital_image);
+                TextView hospital_name = v.findViewById(R.id.hospital_name);
+                TextView tv_latitude = v.findViewById(R.id.tv_latitude);
+                TextView tv_longitude = v.findViewById(R.id.tv_longitude);
+                TextView tv_address = v.findViewById(R.id.tv_address);
+                Button btnTrack = v.findViewById(R.id.btnTrack);
+                if (marker.getTag() != null) {
+                    HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
+                    hospital_name.setText(hospitalBeanFromMArker.hospitalName);
+                    tv_latitude.setText("" + hospitalBeanFromMArker.lat);
+                    tv_longitude.setText("" + hospitalBeanFromMArker.lng);
+                    hospital_image.setImageResource(R.drawable.hospital);
+                    tv_address.setText(hospitalBeanFromMArker.address);
+                    btnTrack.setText("Track " + hospitalBeanFromMArker.hospitalName);
+                    btnTrack.setTextColor(Color.BLACK);
+                }
+                return v;
+            }
+        });
     }
 
     @Override

@@ -77,11 +77,11 @@
                 android:layout_margin="20dp">
 
                 <AutoCompleteTextView
-                    android:inputType="text"
                     android:imeOptions="actionDone"
                     android:id="@+id/actv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:layout_below="@+id/detail"
                     android:layout_marginTop="20dp"
                     android:textSize="16sp"
@@ -151,7 +151,7 @@
                     android:layout_height="35dp"
                     android:layout_marginBottom="50dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:padding="5dp"
                     android:src="@drawable/ic_baseline_format_list_bulleted_24" />
 

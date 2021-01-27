@@ -13,6 +13,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -63,6 +64,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
     ActvAdapter actvAdapter;
     ArrayList<HospitalBean> hospitalList;
+    String MY_PREFS_NAME = "HospitalFinder";
 
     FragmentHospital fragmentHospital;
     FragmentDoctors fragmentDoctors;
@@ -250,9 +252,32 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(DashbordActivity.this, "" + i, Toast.LENGTH_SHORT).show();
+                HospitalBean hospitalBean = (HospitalBean) adapterView.getItemAtPosition(i);
+                String hospitalName = hospitalBean.hospitalName;
+                String address = hospitalBean.address;
+                double lat = hospitalBean.lat;
+                double lng = hospitalBean.lng;
+
+                GPSTracker gpsTracker = new GPSTracker(DashbordActivity.this);
+                if (gpsTracker.canGetLocation()) {
+                    Intent intent = new Intent(DashbordActivity.this, RouteShowActivity.class);
+                    SharedPreferences.Editor editor = DashbordActivity.this.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.putString("name", hospitalBean.hospitalName);
+                    editor.putString("address", hospitalBean.address);
+                    editor.putString("cLat", String.valueOf(lati));
+                    editor.putString("cLong", String.valueOf(longi));
+                    editor.putString("hLat", String.valueOf(hospitalBean.lat));
+                    editor.putString("hLong", String.valueOf(hospitalBean.lng));
+                    editor.apply();
+                    startActivity(intent);
+                    Toast.makeText(DashbordActivity.this, "Name: " + hospitalName + "\nAddress: " + address + "\nHospital lat: " + lat + "\nHospital Lng: " + lng + "\n Current Lat: " + lati + "\n Current Lng: " + longi, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DashbordActivity.this, "Please enable your location", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
+        actv.setThreshold(1);
 
     }
 
@@ -464,6 +489,10 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         }
 
         onSwipeListener onSwipe;
+    }
+
+    private void highlightMarker(double latitude, double longitude, int position) {
+
     }
 
 }
