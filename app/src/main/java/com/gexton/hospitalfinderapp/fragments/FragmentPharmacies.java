@@ -310,22 +310,10 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
     }
 
     public void getCurrentLocation() {
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        } else {
-            GPSTracker gps = new GPSTracker(getContext());
-            if (gps.canGetLocation()) {
-
-                lati = gps.getLatitude();
-                longi = gps.getLongitude();
-                //Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
-
-            } else {
-                //gps.enableLocationPopup();
-                Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
-            }
+        GPSTracker gps = new GPSTracker(getContext());
+        if (gps.canGetLocation()) {
+            lati = gps.getLatitude();
+            longi = gps.getLongitude();
         }
     }
 

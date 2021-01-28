@@ -176,7 +176,6 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
         String lng = String.valueOf(longi);
 
         RequestParams requestParams = new RequestParams();
-        //requestParams.put("location", "25.3689856,68.3474944");
         requestParams.put("location", lat + "," + lng);
         requestParams.put("radius", "1500");
         requestParams.put("type", "doctor");
@@ -256,77 +255,6 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
         }
     }
 
-    /*public void plotMarkersOnMap() {
-        if (mMap != null) {
-
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-            for (int i = 0; i < hospitalBeanArrayList.size(); i++) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng(hospitalBeanArrayList.get(i).lat, hospitalBeanArrayList.get(i).lng))
-                        .title(hospitalBeanArrayList.get(i).hospitalName)
-                        .snippet(hospitalBeanArrayList.get(i).address)
-                        .anchor(0.5f, 0.5f)
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital));
-
-                marker = mMap.addMarker(markerOptions);
-                marker.setTag(hospitalBeanArrayList.get(i));//tag set kar dya
-
-                builder.include(marker.getPosition());//add marker to latlong bounds
-
-                //Setting Custom Info Window
-                setInfoAdapter();
-                //Setting Click Listener on Info Window
-                infoWindowListener();
-
-                ///
-                SharedPreferences prefs = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-                //if (!TextUtils.isEmpty(prefs.getString("newLat", "NoValue")) && !prefs.getString("newLat", "NoValue").equals("NoValue")) {
-
-
-                //newLat = Double.parseDouble(prefs.getString("newLat", "NoValue"));
-                //newLng = Double.parseDouble(prefs.getString("newLng", "NoValue"));
-
-                //When Lat Lng of Specific marker matches to List , it will open its info window
-                //if (hospitalBeanArrayList.get(i).lat.equals(newLat) && hospitalBeanArrayList.get(i).lng.equals(newLng)) {
-                //if (hospitalBeanArrayList.get(i).lat == newLat && hospitalBeanArrayList.get(i).lng == newLng) {
-                if ((hospitalBeanArrayList.get(i).lat + "").equalsIgnoreCase(prefs.getString("newLat", "")) &&
-                        (hospitalBeanArrayList.get(i).lng + "").equalsIgnoreCase(prefs.getString("newLng", ""))) {
-                    System.out.println("-- in inner if GM");
-                    marker.showInfoWindow();
-                }
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(newLat, newLng), 15.0f));
-
-                // }
-                ///
-
-            }//end for loop
-
-            LatLngBounds bounds = builder.build();
-            int padding = 50; // offset from edges of the map in pixels
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-            mMap.animateCamera(cu);
-
-            //Animate camera and Show Info Window When Click On Marker
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    HospitalBean hospitalBeanFromMArker = (HospitalBean) marker.getTag();
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(hospitalBeanFromMArker.lat, hospitalBeanFromMArker.lng), 15.0f));
-                    marker.showInfoWindow();
-                    return true;
-                }
-            });
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    mMap.animateCamera(cu);
-                }
-            });
-        }
-        removeLocation();
-    }*/
-
     private void infoWindowListener() {
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -388,22 +316,10 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
     }
 
     public void getCurrentLocation() {
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        } else {
-            GPSTracker gps = new GPSTracker(getContext());
-            if (gps.canGetLocation()) {
-
-                lati = gps.getLatitude();
-                longi = gps.getLongitude();
-                //Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
-
-            } else {
-                //gps.enableLocationPopup();
-                Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
-            }
+        GPSTracker gps = new GPSTracker(getContext());
+        if (gps.canGetLocation()) {
+            lati = gps.getLatitude();
+            longi = gps.getLongitude();
         }
     }
 

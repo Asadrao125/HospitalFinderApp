@@ -65,6 +65,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
     ListView list_View;
     GoogleMap mMap;
     View view;
+    Button btnRetry;
     private HospitalArrayAdapter myAdapter;
     LinearLayout mapview_layout, listview_layout;
     RelativeLayout layout_mapview, layout_listview;
@@ -172,7 +173,6 @@ public class FragmentHospital extends Fragment implements ApiCallback {
         String lng = String.valueOf(longi);
 
         RequestParams requestParams = new RequestParams();
-        //requestParams.put("location", "25.3689856,68.3474944");
         requestParams.put("location", lat + "," + lng);
         requestParams.put("radius", "1500");
         requestParams.put("type", "hospital");
@@ -306,22 +306,10 @@ public class FragmentHospital extends Fragment implements ApiCallback {
     }
 
     public void getCurrentLocation() {
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        } else {
-            GPSTracker gps = new GPSTracker(getContext());
-            if (gps.canGetLocation()) {
-
-                lati = gps.getLatitude();
-                longi = gps.getLongitude();
-                //Toast.makeText(getContext(), "Your Location is - \nLat: " + lati + "\nLong: " + longi, Toast.LENGTH_LONG).show();
-
-            } else {
-                //gps.enableLocationPopup();
-                Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
-            }
+        GPSTracker gps = new GPSTracker(getContext());
+        if (gps.canGetLocation()) {
+            lati = gps.getLatitude();
+            longi = gps.getLongitude();
         }
     }
 

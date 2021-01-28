@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
@@ -29,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,8 +46,14 @@ import com.gexton.hospitalfinderapp.fragments.FragmentHospital;
 import com.gexton.hospitalfinderapp.fragments.FragmentPharmacies;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
+import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.material.tabs.TabLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -53,6 +61,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
@@ -85,6 +94,8 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     OnSwipeTouchListener onSwipeTouchListener;
 
     SharedPreferences.Editor editor2;
+    RelativeLayout retryLayout;
+    Button btnRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +138,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         });
 
         //Animation Sliding Activity
-        dl.setScrimColor(Color.TRANSPARENT);
         t = new ActionBarDrawerToggle(this, dl, toolbar, R.string.Open, R.string.Close) {
 
             @Override
@@ -235,8 +245,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         });
 
         setupViewPager(viewPager);
-
-        getCurrentLocation();
 
         getNearbyHospitalsList("hospital");
 
@@ -351,18 +359,13 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     }
 
     public void getCurrentLocation() {
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(DashbordActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        GPSTracker gps = new GPSTracker(DashbordActivity.this);
+        if (gps.canGetLocation()) {
+            lati = gps.getLatitude();
+            longi = gps.getLongitude();
         } else {
-            GPSTracker gps = new GPSTracker(DashbordActivity.this);
-            if (gps.canGetLocation()) {
-                lati = gps.getLatitude();
-                longi = gps.getLongitude();
-            } else {
-                gps.enableLocationPopup();
-            }
+            gps.enableLocationPopup();
         }
-        Log.d("name_list", "getCurrentLocation: Current Location_method");
     }
 
     private void getNearbyHospitalsList(String type) {
@@ -487,4 +490,46 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         onSwipeListener onSwipe;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkPermission();
+    }
+
+    private void checkPermission() {
+        Dexter.withContext(this)
+                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            getCurrentLocation();
+                            Log.d("permission_check", "onPermissionsChecked: Permision Granted");
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                        Log.d("permission_check", "onPermissionsChecked: Permision Not Granted");
+                    }
+                }).check();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+        if (states.isNetworkLocationPresent() && states.isGpsPresent() && states.isLocationPresent()) {
+            Log.d("gps_tag", "onActivityResult: RESULT_OK");
+            Intent intent = new Intent(getApplicationContext(), DashbordActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
+            Log.d("gps_tag", "onActivityResult: RESULT_CANCELED");
+        }
+    }
+
 }

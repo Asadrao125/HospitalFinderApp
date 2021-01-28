@@ -122,8 +122,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/layout_fragment_hospital"
         android:layout_below="@+id/layout_2">
 
+        <!--Map View-->
         <RelativeLayout
             android:id="@+id/layout_mapview"
             android:layout_width="match_parent"
@@ -138,6 +140,7 @@
 
         </RelativeLayout>
 
+        <!--List View-->
         <RelativeLayout
             android:id="@+id/layout_listview"
             android:layout_width="match_parent"
