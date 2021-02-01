@@ -124,6 +124,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         contentFrame = findViewById(R.id.contentFrame);
         hospitalList = new ArrayList<>();
         editor2 = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -340,7 +341,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
                     HospitalBean hospitalBean = new HospitalBean(name, image, latitude, longitude, address);
                     hospitalList.add(hospitalBean);
-
                 }
 
                 actvAdapter = new ActvAdapter(DashbordActivity.this, R.layout.item_actv_search, hospitalList);
@@ -384,6 +384,48 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     protected void onResume() {
         super.onResume();
         layout_search.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkPermission();
+        getNearbyHospitalsList("hospital");
+    }
+
+    private void checkPermission() {
+        Dexter.withContext(this)
+                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            getCurrentLocation();
+                            Log.d("permission_check", "onPermissionsChecked: Permision Granted");
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                        Log.d("permission_check", "onPermissionRationaleShouldBeShown: Permision Not Granted");
+                    }
+                }).check();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+        if (states.isNetworkLocationPresent() && states.isGpsPresent() && states.isLocationPresent()) {
+            Log.d("gps_tag", "onActivityResult: RESULT_OK");
+            Intent intent = new Intent(getApplicationContext(), DashbordActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
+            Log.d("gps_tag", "onActivityResult: RESULT_CANCELED");
+        }
     }
 
     static class OnSwipeTouchListener implements View.OnTouchListener {
@@ -484,48 +526,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         }
 
         onSwipeListener onSwipe;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        checkPermission();
-        getNearbyHospitalsList("hospital");
-    }
-
-    private void checkPermission() {
-        Dexter.withContext(this)
-                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted()) {
-                            getCurrentLocation();
-                            Log.d("permission_check", "onPermissionsChecked: Permision Granted");
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        token.continuePermissionRequest();
-                        Log.d("permission_check", "onPermissionsChecked: Permision Not Granted");
-                    }
-                }).check();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
-        if (states.isNetworkLocationPresent() && states.isGpsPresent() && states.isLocationPresent()) {
-            Log.d("gps_tag", "onActivityResult: RESULT_OK");
-            Intent intent = new Intent(getApplicationContext(), DashbordActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
-            Log.d("gps_tag", "onActivityResult: RESULT_CANCELED");
-        }
     }
 
 }
