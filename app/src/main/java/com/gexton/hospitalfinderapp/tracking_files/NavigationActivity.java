@@ -49,6 +49,7 @@ import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.gexton.hospitalfinderapp.MapStyleJSON;
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
@@ -73,6 +74,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -174,6 +176,8 @@ public class NavigationActivity extends AppCompatActivity {
                         .title("My Location"));
 
                 drawRoutes(mMap);
+                boolean success = mMap.setMapStyle(new MapStyleOptions(MapStyleJSON.MAP_STYLE_JSON));
+                //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(NavigationActivity.this, R.raw.style_json));
 
             }
         });

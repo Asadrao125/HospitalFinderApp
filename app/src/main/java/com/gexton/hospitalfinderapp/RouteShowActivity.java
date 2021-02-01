@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -156,12 +157,12 @@ public class RouteShowActivity extends AppCompatActivity {
                 return;
             }
             mMap.setMyLocationEnabled(true);
+            boolean success = mMap.setMapStyle(new MapStyleOptions(MapStyleJSON.MAP_STYLE_JSON));
+            //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(RouteShowActivity.this, R.raw.style_json));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //update issue
 
         GoogleDirection.withServerKey(serverKey)
                 .from(new LatLng(cLatitude, cLongitude))
@@ -174,8 +175,6 @@ public class RouteShowActivity extends AppCompatActivity {
                     public void onDirectionSuccess(@Nullable Direction direction) {
                         if (direction.isOK()) {
 
-                            //total_distance = direction.getRouteList().get(0).getTotalDistance() / 1000;
-                            //tv_distance.setText("Distance: " + total_distance + " km");
                             if (direction.getRouteList().get(0).getTotalDistance() < 1000) {
                                 total_distance = direction.getRouteList().get(0).getTotalDistance();
                                 tv_distance.setText("Distance: " + total_distance + " meter");
@@ -183,7 +182,6 @@ public class RouteShowActivity extends AppCompatActivity {
                                 total_distance = direction.getRouteList().get(0).getTotalDistance() / 1000;
                                 tv_distance.setText("Distance: " + total_distance + " km");
                             }
-
 
                             total_duration = direction.getRouteList().get(0).getTotalDuration() / 60;
                             tv_duration.setText("Duration: " + total_duration + " mins");
