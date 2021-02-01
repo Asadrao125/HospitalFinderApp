@@ -329,9 +329,7 @@ public class NavigationActivity extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     updateMarker(location);
                 }
-            }
-
-            ;
+            };
         };
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "location permission required !!", Toast.LENGTH_SHORT).show();
@@ -466,7 +464,6 @@ public class NavigationActivity extends AppCompatActivity {
             if (carMarker == null) {
                 oldLocation = location;
                 MarkerOptions markerOptions = new MarkerOptions();
-                //BitmapDescriptor car = BitmapDescriptorFactory.fromResource(R.drawable.location);
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car));
                 markerOptions.anchor(0.5f, 0.5f); // set the car image to center of the point instead of anchoring to above or below the location
                 markerOptions.flat(true); // set as true, so that when user rotates the map car icon will remain in the same direction
@@ -498,24 +495,8 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     private void drawRoutes(final GoogleMap mMap) {
-      /*  try {
-            mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
-                    .title("My Location")
-                    .position(new LatLng(cLatitude, cLongitude)));
-
-            mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital))
-                    .title(name)
-                    .snippet(address)
-                    .position(new LatLng(hLat, hLong)));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         GoogleDirection.withServerKey(serverKey)
                 .from(new LatLng(cLatitude, cLongitude))
-                // .and(markerPoints)
                 .to(new LatLng(hLat, hLong))
                 .alternativeRoute(true)
                 .transportMode(TransportMode.DRIVING)

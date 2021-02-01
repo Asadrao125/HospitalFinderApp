@@ -92,10 +92,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     LinearLayout find_hospital_layout, find_doctor_layout, find_pharmacy_layout, share_to_a_friend, rate_app;
 
     OnSwipeTouchListener onSwipeTouchListener;
-
     SharedPreferences.Editor editor2;
-    RelativeLayout retryLayout;
-    Button btnRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,8 +242,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         });
 
         setupViewPager(viewPager);
-
-        getNearbyHospitalsList("hospital");
 
         onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.layout_search), findViewById(R.id.actv));
 
@@ -495,6 +490,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     protected void onStart() {
         super.onStart();
         checkPermission();
+        getNearbyHospitalsList("hospital");
     }
 
     private void checkPermission() {
