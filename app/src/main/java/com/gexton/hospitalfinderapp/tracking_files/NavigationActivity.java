@@ -107,7 +107,6 @@ public class NavigationActivity extends AppCompatActivity {
     ImageView imgBack;
     String serverKey = "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8";
     String MY_PREFS_NAME = "HospitalFinder";
-    Button btn_my_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +137,6 @@ public class NavigationActivity extends AppCompatActivity {
         bService = (Button) findViewById(R.id.b_service);
         tvHospitalName = findViewById(R.id.tvHospitalName);
         imgBack = findViewById(R.id.img_back);
-        btn_my_location = findViewById(R.id.btn_my_location);
         mapFragment = SupportMapFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.map_fragment, mapFragment).commitAllowingStateLoss();
@@ -156,14 +154,19 @@ public class NavigationActivity extends AppCompatActivity {
                         .title(name)
                         .snippet(address));
 
-                mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+               /* mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
                         mapLoaded = true;
                         mMap.getUiSettings().setAllGesturesEnabled(true);
                         mMap.getUiSettings().setZoomControlsEnabled(true);
                     }
-                });
+                });*/
+
+                if (ActivityCompat.checkSelfPermission(NavigationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(NavigationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mMap.setMyLocationEnabled(true);
 
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(cLatitude, cLongitude))
@@ -172,13 +175,6 @@ public class NavigationActivity extends AppCompatActivity {
 
                 drawRoutes(mMap);
 
-            }
-        });
-
-        btn_my_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(cLatitude, cLongitude), 18f));
             }
         });
 

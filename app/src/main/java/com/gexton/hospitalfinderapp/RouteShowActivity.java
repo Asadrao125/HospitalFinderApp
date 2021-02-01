@@ -61,7 +61,6 @@ public class RouteShowActivity extends AppCompatActivity {
     TextView tv_duration, tv_distance;
     Button btn_navigate;
     String MY_PREFS_NAME = "HospitalFinder";
-    Button btn_my_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +85,6 @@ public class RouteShowActivity extends AppCompatActivity {
         tv_distance = findViewById(R.id.tv_distance);
         tv_duration = findViewById(R.id.tv_duration);
         btn_navigate = findViewById(R.id.btn_navigate);
-        btn_my_location = findViewById(R.id.btn_my_location);
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         name = prefs.getString("name", "NoValue");
@@ -117,13 +115,6 @@ public class RouteShowActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Pleae enable your location", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        btn_my_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(cLatitude, cLongitude), 18f));
             }
         });
     }
@@ -160,6 +151,11 @@ public class RouteShowActivity extends AppCompatActivity {
                     .title(name)
                     .snippet(address)
                     .position(new LatLng(hLat, hLong)));
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
 
         } catch (Exception e) {
             e.printStackTrace();

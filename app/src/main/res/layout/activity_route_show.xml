@@ -45,19 +45,11 @@
         android:background="@color/white">
 
         <Button
-            android:text="My Location"
-            android:backgroundTint="@color/red"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/btn_my_location"
-            android:layout_width="140dp"
-            android:layout_height="40dp"/>
-
-        <Button
             android:textColor="@color/white"
             android:id="@+id/btn_navigate"
+            android:layout_centerVertical="true"
             android:layout_width="140dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/btn_my_location"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/red"
             android:layout_alignParentEnd="true"
             android:text="Navigate" />
@@ -65,7 +57,7 @@
         <TextView
             android:id="@+id/tv_duration"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tv_distance"
             android:background="@color/white"
             android:text="Duration"
@@ -73,11 +65,10 @@
             android:textColor="@color/black" />
 
         <TextView
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/roboto_regular"
             android:id="@+id/tv_distance"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:text="Distance"
             android:textColor="@color/black" />
