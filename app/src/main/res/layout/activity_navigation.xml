@@ -18,11 +18,22 @@
         android:text="Start Foreground Tracking" />
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/btn_my_location"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="My Location"
+        android:backgroundTint="@color/red"
+        android:layout_above="@+id/b_service"/>
+
+    <Button
         android:id="@+id/b_service"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:backgroundTint="@color/red"
         android:tag="s"
         android:text="Start Background Tracking" />

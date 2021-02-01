@@ -1,5 +1,6 @@
 package com.gexton.hospitalfinderapp;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,10 +9,14 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +41,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -55,6 +61,7 @@ public class RouteShowActivity extends AppCompatActivity {
     TextView tv_duration, tv_distance;
     Button btn_navigate;
     String MY_PREFS_NAME = "HospitalFinder";
+    Button btn_my_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +86,7 @@ public class RouteShowActivity extends AppCompatActivity {
         tv_distance = findViewById(R.id.tv_distance);
         tv_duration = findViewById(R.id.tv_duration);
         btn_navigate = findViewById(R.id.btn_navigate);
+        btn_my_location = findViewById(R.id.btn_my_location);
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         name = prefs.getString("name", "NoValue");
@@ -111,6 +119,13 @@ public class RouteShowActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btn_my_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(cLatitude, cLongitude), 18f));
+            }
+        });
     }
 
     public void getCurrentLocation() {
@@ -136,7 +151,7 @@ public class RouteShowActivity extends AppCompatActivity {
     private void drawRoutes(final GoogleMap mMap) {
         try {
             mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car))
+                    .icon(bitmapDescriptorFromVector(RouteShowActivity.this, R.drawable.ic_location_green))
                     .title("My Location")
                     .position(new LatLng(cLatitude, cLongitude)));
 
@@ -149,6 +164,9 @@ public class RouteShowActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //update issue
+
         GoogleDirection.withServerKey(serverKey)
                 .from(new LatLng(cLatitude, cLongitude))
                 // .and(markerPoints)
@@ -160,10 +178,18 @@ public class RouteShowActivity extends AppCompatActivity {
                     public void onDirectionSuccess(@Nullable Direction direction) {
                         if (direction.isOK()) {
 
-                            total_distance = direction.getRouteList().get(0).getTotalDistance() / 1000;
-                            total_duration = direction.getRouteList().get(0).getTotalDuration() / 60;
+                            //total_distance = direction.getRouteList().get(0).getTotalDistance() / 1000;
+                            //tv_distance.setText("Distance: " + total_distance + " km");
+                            if (direction.getRouteList().get(0).getTotalDistance() < 1000) {
+                                total_distance = direction.getRouteList().get(0).getTotalDistance();
+                                tv_distance.setText("Distance: " + total_distance + " meter");
+                            } else {
+                                total_distance = direction.getRouteList().get(0).getTotalDistance() / 1000;
+                                tv_distance.setText("Distance: " + total_distance + " km");
+                            }
 
-                            tv_distance.setText("Distance: " + total_distance + " km");
+
+                            total_duration = direction.getRouteList().get(0).getTotalDuration() / 60;
                             tv_duration.setText("Duration: " + total_duration + " mins");
 
                             for (int index = 0; index < direction.getRouteList().size(); index++) {
@@ -225,4 +251,17 @@ public class RouteShowActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_location_green);
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
+        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
 }

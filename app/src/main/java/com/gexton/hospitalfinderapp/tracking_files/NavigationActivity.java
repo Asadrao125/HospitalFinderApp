@@ -1,10 +1,12 @@
 package com.gexton.hospitalfinderapp.tracking_files;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -23,7 +25,10 @@ import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +50,7 @@ import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.gexton.hospitalfinderapp.R;
+import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -101,6 +107,7 @@ public class NavigationActivity extends AppCompatActivity {
     ImageView imgBack;
     String serverKey = "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8";
     String MY_PREFS_NAME = "HospitalFinder";
+    Button btn_my_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +138,7 @@ public class NavigationActivity extends AppCompatActivity {
         bService = (Button) findViewById(R.id.b_service);
         tvHospitalName = findViewById(R.id.tvHospitalName);
         imgBack = findViewById(R.id.img_back);
+        btn_my_location = findViewById(R.id.btn_my_location);
         mapFragment = SupportMapFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.map_fragment, mapFragment).commitAllowingStateLoss();
@@ -157,8 +165,20 @@ public class NavigationActivity extends AppCompatActivity {
                     }
                 });
 
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(cLatitude, cLongitude))
+                        .icon(bitmapDescriptorFromVector(NavigationActivity.this, R.drawable.ic_location_green))
+                        .title("My Location"));
+
                 drawRoutes(mMap);
 
+            }
+        });
+
+        btn_my_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(cLatitude, cLongitude), 18f));
             }
         });
 
@@ -329,7 +349,9 @@ public class NavigationActivity extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     updateMarker(location);
                 }
-            };
+            }
+
+            ;
         };
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "location permission required !!", Toast.LENGTH_SHORT).show();
@@ -568,6 +590,18 @@ public class NavigationActivity extends AppCompatActivity {
 
     public void stopService() {
         stopBackgroundService();
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_location_green);
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
+        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 }
