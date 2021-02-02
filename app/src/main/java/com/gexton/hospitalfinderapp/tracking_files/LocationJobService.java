@@ -160,8 +160,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
             Log.e("api client", "not null");
         }
     }
-
-
+    
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
         Log.d("job", "stopped");

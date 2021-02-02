@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.MapStyleJSON;
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.adapters.PharmacyArrayAdapter;
@@ -43,6 +44,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.RequestParams;
@@ -193,6 +195,9 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
                         .snippet(hospitalBeanArrayList.get(i).address)
                         .anchor(0.5f, 0.5f)
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hospital));
+
+                boolean success = mMap.setMapStyle(new MapStyleOptions(MapStyleJSON.MAP_STYLE_JSON));
+                //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(NavigationActivity.this, R.raw.style_json));
 
                 marker = mMap.addMarker(markerOptions);
                 marker.setTag(hospitalBeanArrayList.get(i));//tag set kar dya

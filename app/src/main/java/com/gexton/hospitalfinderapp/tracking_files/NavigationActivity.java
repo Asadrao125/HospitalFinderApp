@@ -156,24 +156,24 @@ public class NavigationActivity extends AppCompatActivity {
                         .title(name)
                         .snippet(address));
 
-               /* mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(cLatitude, cLongitude))
+                        .icon(bitmapDescriptorFromVector(NavigationActivity.this, R.drawable.ic_location_green))
+                        .title("My Location"));
+
+                mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
                         mapLoaded = true;
-                        mMap.getUiSettings().setAllGesturesEnabled(true);
-                        mMap.getUiSettings().setZoomControlsEnabled(true);
+                        //mMap.getUiSettings().setAllGesturesEnabled(true);
+                        //mMap.getUiSettings().setZoomControlsEnabled(true);
                     }
-                });*/
+                });
 
                 if (ActivityCompat.checkSelfPermission(NavigationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(NavigationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(cLatitude, cLongitude))
-                        .icon(bitmapDescriptorFromVector(NavigationActivity.this, R.drawable.ic_location_green))
-                        .title("My Location"));
 
                 drawRoutes(mMap);
                 boolean success = mMap.setMapStyle(new MapStyleOptions(MapStyleJSON.MAP_STYLE_JSON));
