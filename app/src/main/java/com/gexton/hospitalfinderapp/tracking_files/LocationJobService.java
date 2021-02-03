@@ -160,7 +160,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
             Log.e("api client", "not null");
         }
     }
-    
+
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
         Log.d("job", "stopped");
@@ -205,11 +205,11 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     .setWhen(0)
                     .setAutoCancel(false)
                     .setCategory(Notification.EXTRA_BIG_TEXT)
-                    .setContentTitle("Tracking")
-                    .setContentText("Your trip in progress")
+                    .setContentTitle("Hospital Finder App")
+                    //.setContentText("Your trip in progress")
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setColor(ContextCompat.getColor(getBaseContext(), R.color.red))
-                    .setStyle(new Notification.BigTextStyle().bigText("Track in progress"))
+                    .setStyle(new Notification.BigTextStyle().bigText("Trip in progress"))
                     .setChannelId("track_marty")
                     .setContentIntent(pI)
                     .setShowWhen(true)
@@ -222,11 +222,11 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     .setWhen(0)
                     .setAutoCancel(false)
                     .setCategory(Notification.EXTRA_BIG_TEXT)
-                    .setContentTitle("Tracking")
-                    .setContentText("Track in progress")
+                    .setContentTitle("Hospital Finder App")
+                    //.setContentText("Track in progress")
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setColor(ContextCompat.getColor(getBaseContext(), R.color.black))
-                    .setStyle(new Notification.BigTextStyle().bigText("Track in progress"))
+                    .setStyle(new Notification.BigTextStyle().bigText("Trip in progress"))
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setShowWhen(true)
                     .setContentIntent(pI)

@@ -17,7 +17,6 @@ public class ApiManager {
     String apiName;
     RequestParams params;
     ApiCallback apiCallback;
-    
     String baseURL = "https://maps.googleapis.com/";
     public static final String API_HOME_LIST = "maps/api/place/nearbysearch/json?";
 
@@ -60,5 +59,4 @@ public class ApiManager {
                 }
         );
     }
-
 }

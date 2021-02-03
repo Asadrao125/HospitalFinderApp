@@ -17,24 +17,24 @@ import java.util.List;
 
 public class ActvAdapter extends ArrayAdapter<HospitalBean> {
     private final Context mContext;
-    private final List<HospitalBean> mDepartments;
-    private final List<HospitalBean> mDepartmentsAll;
+    private final List<HospitalBean> mHospitalBeans;
+    private final List<HospitalBean> mHospitalBeansAll;
     private final int mLayoutResourceId;
 
-    public ActvAdapter(Context context, int resource, List<HospitalBean> departments) {
-        super(context, resource, departments);
+    public ActvAdapter(Context context, int resource, List<HospitalBean> beanList) {
+        super(context, resource, beanList);
         this.mContext = context;
         this.mLayoutResourceId = resource;
-        this.mDepartments = new ArrayList<>(departments);
-        this.mDepartmentsAll = new ArrayList<>(departments);
+        this.mHospitalBeans = new ArrayList<>(beanList);
+        this.mHospitalBeansAll = new ArrayList<>(beanList);
     }
 
     public int getCount() {
-        return mDepartments.size();
+        return mHospitalBeans.size();
     }
 
     public HospitalBean getItem(int position) {
-        return mDepartments.get(position);
+        return mHospitalBeans.get(position);
     }
 
     public long getItemId(int position) {
@@ -70,7 +70,7 @@ public class ActvAdapter extends ArrayAdapter<HospitalBean> {
                 FilterResults filterResults = new FilterResults();
                 List<HospitalBean> departmentsSuggestion = new ArrayList<>();
                 if (constraint != null) {
-                    for (HospitalBean department : mDepartmentsAll) {
+                    for (HospitalBean department : mHospitalBeansAll) {
                         if (department.hospitalName.toLowerCase().startsWith(constraint.toString().toLowerCase())) {
                             departmentsSuggestion.add(department);
                         }
@@ -83,18 +83,18 @@ public class ActvAdapter extends ArrayAdapter<HospitalBean> {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                mDepartments.clear();
+                mHospitalBeans.clear();
                 if (results != null && results.count > 0) {
                     // avoids unchecked cast warning when using mDepartments.addAll((ArrayList<Department>) results.values);
                     for (Object object : (List<?>) results.values) {
                         if (object instanceof HospitalBean) {
-                            mDepartments.add((HospitalBean) object);
+                            mHospitalBeans.add((HospitalBean) object);
                         }
                     }
                     notifyDataSetChanged();
                 } else if (constraint == null) {
                     // no filter, add entire original list back in
-                    mDepartments.addAll(mDepartmentsAll);
+                    mHospitalBeans.addAll(mHospitalBeansAll);
                     notifyDataSetInvalidated();
                 }
             }

@@ -46,22 +46,6 @@ public class HospitalArrayAdapter extends ArrayAdapter<HospitalBean> {
         tv_hospital_lng.setText("Longitude: " + hospitalBeanList.get(position).lng);
         //Picasso.get().load(hospitalBeanList.get(position).imageHospital).into(img_hospital);
         tv_hospital_address.setText(hospitalBeanList.get(position).address);
-
-        /*img_direction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GPSTracker gpsTracker = new GPSTracker(context);
-                if (gpsTracker.canGetLocation()) {
-                    Intent intent = new Intent(context, RouteShowActivity.class);
-                    intent.putExtra("name", hospitalBeanList.get(position).hospitalName);
-                    intent.putExtra("address", hospitalBeanList.get(position).address);
-                    intent.putExtra("lat", hospitalBeanList.get(position).lat);
-                    intent.putExtra("lng", hospitalBeanList.get(position).lng);
-                    context.startActivity(intent);
-                }
-            }
-        });*/
-
         return view;
     }
 }

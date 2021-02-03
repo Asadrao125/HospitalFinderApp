@@ -143,7 +143,7 @@ public class RouteShowActivity extends AppCompatActivity {
     private void drawRoutes(final GoogleMap mMap) {
         try {
             mMap.addMarker(new MarkerOptions()
-                    .icon(bitmapDescriptorFromVector(RouteShowActivity.this, R.drawable.ic_location_green))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_icon_new))
                     .title("My Location")
                     .position(new LatLng(cLatitude, cLongitude)));
 

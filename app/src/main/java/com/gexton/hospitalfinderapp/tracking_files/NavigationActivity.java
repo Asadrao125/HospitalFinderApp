@@ -158,7 +158,7 @@ public class NavigationActivity extends AppCompatActivity {
 
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(cLatitude, cLongitude))
-                        .icon(bitmapDescriptorFromVector(NavigationActivity.this, R.drawable.ic_location_green))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_icon_new))
                         .title("My Location"));
 
                 mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
@@ -232,7 +232,6 @@ public class NavigationActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
     }
 
     private BroadcastReceiver jobStateChanged = new BroadcastReceiver() {
@@ -258,11 +257,11 @@ public class NavigationActivity extends AppCompatActivity {
     private void changeServiceButton(boolean isStarted) {
         if (isStarted) {
             bService.setTag("f");
-            bService.setText("STOP BACKGROUND TRACKING");
+            bService.setText("STOP TRIP");
             button.setVisibility(View.GONE);
         } else {
             bService.setTag("s");
-            bService.setText("START BACKGROUND TRACKING");
+            bService.setText("START TRIP");
             button.setVisibility(View.GONE);
         }
     }
