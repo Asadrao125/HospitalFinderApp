@@ -42,14 +42,23 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <service
+       <!-- <service
             android:name=".tracking_files.UploadLocationService"
-            android:exported="true" />
+            android:exported="true" />-->
 
         <service
             android:name=".tracking_files.LocationJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
+        <!-- Recommended for Android 9 (API level 28) and lower. -->
+        <!-- Required for Android 10 (API level 29) and higher. -->
+        <service
+            android:name=".gps.GPSTracker"
+            android:foregroundServiceType="location"  >
+        <!-- Any inner elements would go here. -->
+    </service>
 
     </application>
 

@@ -11,16 +11,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.gexton.hospitalfinderapp.DashbordActivity;
 import com.gexton.hospitalfinderapp.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -59,6 +60,8 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
     public static boolean isJobRunning = false;
     GoogleApiClient mGoogleApiClient;
     ArrayList<Location> updatesList = new ArrayList<>();
+    String name;
+    String MY_PREFS_NAME = "HospitalFinder";
 
     public static final String ACTION_STOP_JOB = "actionStopJob";
 
@@ -121,8 +124,8 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
 
                     if (cd.isConnectingToInternet()) { // check whether internet is available or not
                         updatesList.add(location); //if available add latest location point and send list to server
-                        Intent i1 = new Intent(LocationJobService.this, UploadLocationService.class);
-                        i1.putParcelableArrayListExtra("points", updatesList);
+                        //Intent i1 = new Intent(LocationJobService.this, UploadLocationService.class);
+                        //i1.putParcelableArrayListExtra("points", updatesList);
                         updatesList.clear();
                     } else { // if there is no internet connection
                         updatesList.add(location); // add location points to the list
@@ -194,6 +197,14 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
 
     private void createNotification() {
 
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+
+        if (!TextUtils.isEmpty(prefs.getString("name", "NoValue")) && !prefs.getString("name", "NoValue").equals("NoValue")) {
+            name = prefs.getString("name", "NoValue");
+        } else {
+            name = "Hospital Finder";
+        }
+
         PendingIntent pI;
         pI = PendingIntent.getActivity(this, 0, new Intent(this, NavigationActivity.class), 0);
 
@@ -205,7 +216,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     .setWhen(0)
                     .setAutoCancel(false)
                     .setCategory(Notification.EXTRA_BIG_TEXT)
-                    .setContentTitle("Hospital Finder App")
+                    .setContentTitle(name)
                     //.setContentText("Your trip in progress")
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setColor(ContextCompat.getColor(getBaseContext(), R.color.red))
@@ -222,7 +233,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     .setWhen(0)
                     .setAutoCancel(false)
                     .setCategory(Notification.EXTRA_BIG_TEXT)
-                    .setContentTitle("Hospital Finder App")
+                    .setContentTitle(name)
                     //.setContentText("Track in progress")
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setColor(ContextCompat.getColor(getBaseContext(), R.color.black))

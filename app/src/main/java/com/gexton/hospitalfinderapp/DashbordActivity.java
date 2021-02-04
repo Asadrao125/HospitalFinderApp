@@ -49,6 +49,7 @@ import com.gexton.hospitalfinderapp.models.HospitalBean;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.material.tabs.TabLayout;
+import com.karumi.dexter.BuildConfig;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -223,7 +224,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.ic_baseline_format_list_bulleted_24);
+        toolbar.setNavigationIcon(R.drawable.menu);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

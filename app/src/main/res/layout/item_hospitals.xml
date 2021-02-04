@@ -33,7 +33,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/hospital" />
+                android:src="@drawable/direction" />
 
             <TextView
                 android:id="@+id/tv_hospital_address"

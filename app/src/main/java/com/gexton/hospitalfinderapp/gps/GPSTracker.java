@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class GPSTracker extends Service implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    private final Context mContext;
+    private  Context mContext;
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean canGetLocation = false;
@@ -43,6 +43,10 @@ public class GPSTracker extends Service implements LocationListener, GoogleApiCl
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
     protected LocationManager locationManager;
     public int REQUEST_CHECK_SETTING = 123;
+
+
+    public GPSTracker() {
+    }
 
     public GPSTracker(Context context) {
         this.mContext = context;
