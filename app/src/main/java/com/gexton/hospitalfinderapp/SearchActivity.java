@@ -32,7 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity implements ApiCallback {
+public class SearchActivity extends BaseActivity implements ApiCallback {
     ListView listView;
     private SearchAdapter myAdapter;
     ApiCallback apiCallback;

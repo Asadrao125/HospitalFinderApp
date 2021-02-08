@@ -136,7 +136,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
             ;
         };
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "permission required !!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.toast_permission_required), Toast.LENGTH_SHORT).show();
             return;
         }
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(LocationJobService.this);
@@ -148,7 +148,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
         LocalBroadcastManager.getInstance(getBaseContext()).sendBroadcast(jobStartedMessage);
         createNotification();
         //Toast.makeText(getApplicationContext(), "Location job service started", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), "Navigation Started", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.toast_navigation_stated), Toast.LENGTH_SHORT).show();
     }
 
     private void buildGoogleApiClient() {
@@ -202,7 +202,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
         if (!TextUtils.isEmpty(prefs.getString("name", "NoValue")) && !prefs.getString("name", "NoValue").equals("NoValue")) {
             name = prefs.getString("name", "NoValue");
         } else {
-            name = "Hospital Finder";
+            name = getString(R.string.hospital_finder);
         }
 
         PendingIntent pI;
@@ -212,7 +212,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
         Notification notification = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = mBuilder.setSmallIcon(R.drawable.doctor)
-                    .setTicker("Tracking")
+                    .setTicker(getString(R.string.notification_ticker_tracking))
                     .setWhen(0)
                     .setAutoCancel(false)
                     .setCategory(Notification.EXTRA_BIG_TEXT)
@@ -220,7 +220,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     //.setContentText("Your trip in progress")
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setColor(ContextCompat.getColor(getBaseContext(), R.color.red))
-                    .setStyle(new Notification.BigTextStyle().bigText("Trip in progress"))
+                    .setStyle(new Notification.BigTextStyle().bigText(getString(R.string.notification_content_title_trip_in_progress)))
                     .setChannelId("track_marty")
                     .setContentIntent(pI)
                     .setShowWhen(true)
@@ -229,7 +229,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
         } else {
             notification = mBuilder
                     .setSmallIcon((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) ? R.drawable.ic_side_menu : R.mipmap.hospital)
-                    .setTicker("Tracking")
+                    .setTicker(getString(R.string.notification_ticker_tracking))
                     .setWhen(0)
                     .setAutoCancel(false)
                     .setCategory(Notification.EXTRA_BIG_TEXT)
@@ -237,7 +237,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
                     //.setContentText("Track in progress")
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setColor(ContextCompat.getColor(getBaseContext(), R.color.black))
-                    .setStyle(new Notification.BigTextStyle().bigText("Trip in progress"))
+                    .setStyle(new Notification.BigTextStyle().bigText(getString(R.string.notification_content_title_trip_in_progress)))
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setShowWhen(true)
                     .setContentIntent(pI)
@@ -270,7 +270,7 @@ public class LocationJobService extends JobService implements GoogleApiClient.Co
         if (mLocationCallback != null && mFusedLocationProviderClient != null) {
             mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
             //Toast.makeText(getApplicationContext(), "Location job service stopped.", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(), "Navigation Stoped", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.toast_navigation_stopped), Toast.LENGTH_SHORT).show();
         }
         getSharedPreferences("track", MODE_PRIVATE).edit().putBoolean("isServiceStarted", false).apply();
         Intent jobStoppedMessage = new Intent(JOB_STATE_CHANGED);

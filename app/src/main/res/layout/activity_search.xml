@@ -17,7 +17,7 @@
         android:background="@drawable/button_background"
         android:drawablePadding="10dp"
         android:drawableRight="@drawable/search_red"
-        android:hint="Search"
+        android:hint="@string/search"
         android:padding="10dp"
         android:visibility="gone" />
 
@@ -39,7 +39,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:hint="Search"
+        android:hint="@string/search"
         android:background="@drawable/button_background"/>
 
     <ListView

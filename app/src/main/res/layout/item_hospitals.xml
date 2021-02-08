@@ -44,7 +44,7 @@
                 android:layout_toStartOf="@+id/img_direction"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="2"
-                android:text="Address" />
+                android:text="@string/address" />
 
             <TextView
                 android:id="@+id/tv_hospital_name"
@@ -54,7 +54,7 @@
                 android:layout_toStartOf="@+id/img_direction"
                 android:fontFamily="@font/roboto_bold"
                 android:maxLines="1"
-                android:text="Name"
+                android:text="@string/name"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -68,7 +68,7 @@
             android:layout_below="@+id/image_layout"
             android:layout_margin="5dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Latitude"
+            android:text="@string/latitude"
             android:visibility="gone" />
 
         <TextView
@@ -78,7 +78,7 @@
             android:layout_below="@+id/tv_hospital_lat"
             android:layout_margin="5dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Longitude"
+            android:text="@string/longitude"
             android:visibility="gone" />
 
     </RelativeLayout>

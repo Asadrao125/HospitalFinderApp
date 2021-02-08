@@ -53,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RouteShowActivity extends AppCompatActivity {
+public class RouteShowActivity extends BaseActivity {
     GoogleMap mMap;
     String serverKey = "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8";
     String name, address;
@@ -102,7 +102,7 @@ public class RouteShowActivity extends AppCompatActivity {
         Log.d("Location_Data_Route", "onCreate: " + hLat);
         Log.d("Location_Data_Route", "onCreate: " + hLong);
 
-        setTitle("Possible Routes");
+        setTitle(getString(R.string.possible_route_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -114,7 +114,7 @@ public class RouteShowActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Pleae enable your location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_permission_required), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -144,7 +144,7 @@ public class RouteShowActivity extends AppCompatActivity {
         try {
             mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_icon_new))
-                    .title("My Location")
+                    .title(getString(R.string.my_location_title_for_marker))
                     .position(new LatLng(cLatitude, cLongitude)));
 
             mMap.addMarker(new MarkerOptions()
@@ -177,14 +177,14 @@ public class RouteShowActivity extends AppCompatActivity {
 
                             if (direction.getRouteList().get(0).getTotalDistance() < 1000) {
                                 total_distance = direction.getRouteList().get(0).getTotalDistance();
-                                tv_distance.setText("Distance: " + total_distance + " meter");
+                                tv_distance.setText(getString(R.string.distance) + ": " + total_distance + " meter");
                             } else {
                                 total_distance = direction.getRouteList().get(0).getTotalDistance() / 1000;
-                                tv_distance.setText("Distance: " + total_distance + " km");
+                                tv_distance.setText(getString(R.string.distance) + ": " + total_distance + " km");
                             }
 
                             total_duration = direction.getRouteList().get(0).getTotalDuration() / 60;
-                            tv_duration.setText("Duration: " + total_duration + " mins");
+                            tv_duration.setText(getString(R.string.duration) + ": " + total_duration + " mins");
 
                             for (int index = 0; index < direction.getRouteList().size(); index++) {
 

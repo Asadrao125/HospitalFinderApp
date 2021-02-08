@@ -2,20 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gexton.hospitalfinderapp">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.HospitalFinderApp">
-        <activity android:name=".SearchActivity"/>
+        <activity android:name=".ChangeLanguageActivity"></activity>
+        <activity android:name=".SearchActivity" />
         <activity
             android:name=".RouteShowActivity"
             android:theme="@style/Theme.Toolbar" />
@@ -41,25 +36,28 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-       <!-- <service
+        <!--
+ <service
             android:name=".tracking_files.UploadLocationService"
-            android:exported="true" />-->
-
+            android:exported="true" />
+        -->
         <service
             android:name=".tracking_files.LocationJobService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-
-        <!-- Recommended for Android 9 (API level 28) and lower. -->
+            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- Recommended for Android 9 (API level 28) and lower. -->
         <!-- Required for Android 10 (API level 29) and higher. -->
         <service
             android:name=".gps.GPSTracker"
-            android:foregroundServiceType="location"  >
-        <!-- Any inner elements would go here. -->
-    </service>
+            android:foregroundServiceType="location">
 
+            <!-- Any inner elements would go here. -->
+        </service>
     </application>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

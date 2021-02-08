@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">اسپتال ڳوليندڙ</string>
+    <string name="title_activity_maps">نقشو</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Open">کليل</string>
+    <string name="Close">بند ڪريو</string>
+    <string name="title_activity_tracking_and_ruote">نقشو</string>
+    <string name="title_activity_ruote_and_track">نقشو</string>
+
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=com.gexton.hospitalfinderapp</string>
+
+    <string name="hospital_finder">اسپتال ڳوليندڙ</string>
+    <string name="search_for">ڳوليو ...</string>
+    <string name="find_the_nearby_nhospitals_doctors_clinic_or_pharmacies_in_your_city">پنھنجي شھر جي ويجھو اسپتالون ، ڊاڪٽر ڪلينڪ يا دواسازي ڳوليو.</string>
+    <string name="find_hospitals">اسپتالون ڳوليو</string>
+    <string name="find_doctors">ڊاڪٽر ڳولهيو</string>
+    <string name="find_pharmacies">فارميسي ڳوليو</string>
+    <string name="rate_app">ايپ جي درجه بندي</string>
+    <string name="share_to_a_friend">هڪ دوست ڏانهن شيئر ڪريو</string>
+    <string name="start_foreground_tracking">فيلڊ گرائونڊ ٽريڪنگ شروع ڪريو</string>
+    <string name="start_background_tracking">پس منظر جي چڪاس شروع ڪريو</string>
+    <string name="possible_routes">ممڪن رستو</string>
+    <string name="navigate">نيويگيشن</string>
+    <string name="duration">مدو</string>
+    <string name="distance">مفاصلو</string>
+    <string name="start_navigation">نيويگيشن شروع ڪريو</string>
+    <string name="search">ڳولا</string>
+    <string name="track">ڪچي</string>
+    <string name="hospital_name">اسپتال جو نالو</string>
+    <string name="mapview">نقشو نظارو</string>
+    <string name="listview">فهرست ڏسي</string>
+    <string name="search_result">ڳولا جو نتيجو</string>
+    <string name="address">پتي</string>
+    <string name="name">نالو</string>
+    <string name="latitude">ويڪرائي itudeاڪ</string>
+    <string name="longitude">ڊگھي ڊگھائي</string>
+    <string name="toast_please_enable_your_location">مهرباني ڪري پنهنجي جڳهه کي قابل بڻايو</string>
+    <string name="tab_hospital">هاسپيٽل</string>
+    <string name="tab_doctor">ڊاڪٽر</string>
+    <string name="tab_pharmacy">فارميسي</string>
+    <string name="recomendation_text">مون کي توهان کي اسپتال ڳوليندڙ ايپليڪيشن جي تجويز ڏيو</string>
+    <string name="toast_please_turn_on_gps">مھرباني ڪري جي پي ايس آن ڪريو</string>
+    <string name="gps_is_setting">جي پي ايس سيٽنگون آهي</string>
+    <string name="gps_not_enabled_msg_show_alert_gps_dialog">جي پي ايس فعال ناهي. ڇا توهان سيٽنگون مينيو ۾ وڃڻ چاهيو ٿا؟</string>
+    <string name="settings">جوڙ</string>
+    <string name="cancel">رد ڪرڻ</string>
+    <string name="toast_permission_required">اجازت گھربل آھي !!</string>
+    <string name="toast_navigation_stated">نيويگيشن شروع ٿي وئي</string>
+    <string name="notification_ticker_tracking">ٽريڪنگ</string>
+    <string name="notification_content_title_trip_in_progress">سفر جاري آهي</string>
+    <string name="toast_navigation_stopped">بحري بند ٿي وئي</string>
+    <string name="gps_dialog_message_like_google_map">توهان جو جي پي ايس معذور لڳي رهيو آهي ، ڇا توهان ان کي فعال ڪرڻ چاهيو ٿا؟</string>
+    <string name="yes">ها</string>
+    <string name="no">نه</string>
+    <string name="toast_this_is_no_supported_for_play_services">اھو مدد ٿيل ناھي</string>
+    <string name="toast_marker_dragged">مارڪر ڇڪي ويو</string>
+    <string name="my_location_title_for_marker">منهنجو هنڌ</string>
+    <string name="toast_service_for_pre_lollipop_will_available">اڳواٽ لوليپپ جي لاءِ خدمت اڳڀرائي ۾ دستياب ٿيندي</string>
+    <string name="navigation">نيويگيشن</string>
+    <string name="stop_trip">سفر کي اسٽاپ ڪريو</string>
+    <string name="start_trip">سفر شروع ڪريو</string>
+    <string name="toast_yet_to_be_coded">اڃا تائين ڪوڊ ناهي ڪيو ويو- اسٽاپ سروس</string>
+    <string name="stop_foreground_tracking">پيشڪش ٽريڪنگ کي روڪيو</string>
+    <string name="possible_route_title">ممڪن رستو</string>
+    <string name="change_language">Change Language</string>
+
+</resources>

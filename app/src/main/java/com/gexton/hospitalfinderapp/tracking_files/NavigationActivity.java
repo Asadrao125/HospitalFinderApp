@@ -49,6 +49,7 @@ import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.gexton.hospitalfinderapp.BaseActivity;
 import com.gexton.hospitalfinderapp.MapStyleJSON;
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
@@ -86,7 +87,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends BaseActivity {
     FusedLocationProviderClient mFusedLocationProviderClient;
     LocationCallback mLocationCallback;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
@@ -159,7 +160,7 @@ public class NavigationActivity extends AppCompatActivity {
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(cLatitude, cLongitude))
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_icon_new))
-                        .title("My Location"));
+                        .title(getString(R.string.my_location_title_for_marker)));
 
                 mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
@@ -202,13 +203,13 @@ public class NavigationActivity extends AppCompatActivity {
                             Log.d("registered", " on start service");
                             startBackgroundService();
                         } else {
-                            Toast.makeText(getBaseContext(), "service for pre lollipop will be available in next update", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), getString(R.string.toast_service_for_pre_lollipop_will_available), Toast.LENGTH_LONG).show();
                         }
                     } else {
                         stopBackgroundService();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_please_turn_on_gps), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -225,7 +226,7 @@ public class NavigationActivity extends AppCompatActivity {
             }
         });*/
 
-        tvHospitalName.setText("Navigation");
+        tvHospitalName.setText(R.string.navigation);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -257,11 +258,11 @@ public class NavigationActivity extends AppCompatActivity {
     private void changeServiceButton(boolean isStarted) {
         if (isStarted) {
             bService.setTag("f");
-            bService.setText("STOP TRIP");
+            bService.setText(R.string.stop_trip);
             button.setVisibility(View.GONE);
         } else {
             bService.setTag("s");
-            bService.setText("START TRIP");
+            bService.setText(R.string.start_trip);
             button.setVisibility(View.GONE);
         }
     }
@@ -275,7 +276,7 @@ public class NavigationActivity extends AppCompatActivity {
                 LocalBroadcastManager.getInstance(getBaseContext()).sendBroadcast(stopJobService);
                 changeServiceButton(false);
             } else {
-                Toast.makeText(getApplicationContext(), "yet to be coded - stop service", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_yet_to_be_coded), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -353,12 +354,12 @@ public class NavigationActivity extends AppCompatActivity {
             ;
         };
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "location permission required !!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.toast_permission_required), Toast.LENGTH_SHORT).show();
             return;
         }
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
         button.setTag("f");
-        button.setText("STOP FOREGROUND TRACKING");
+        button.setText(R.string.stop_foreground_tracking);
         //Toast.makeText(getApplicationContext(),"Location update started",Toast.LENGTH_SHORT).show();
     }
 
@@ -373,7 +374,7 @@ public class NavigationActivity extends AppCompatActivity {
         // recommended in applications that request frequent location updates.
         mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
         button.setTag("s");
-        button.setText("START FOREGROUND TRACKING");
+        button.setText(getString(R.string.start_foreground_tracking));
         bService.setVisibility(View.VISIBLE);
         //Toast.makeText(getApplicationContext(),"Location update stopped.",Toast.LENGTH_SHORT).show();
     }
@@ -488,7 +489,7 @@ public class NavigationActivity extends AppCompatActivity {
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car));
                 markerOptions.anchor(0.5f, 0.5f); // set the car image to center of the point instead of anchoring to above or below the location
                 markerOptions.flat(true); // set as true, so that when user rotates the map car icon will remain in the same direction
-                markerOptions.title("My Location").position(new LatLng(location.getLatitude(), location.getLongitude()));
+                markerOptions.title(getString(R.string.my_location_title_for_marker)).position(new LatLng(location.getLatitude(), location.getLongitude()));
                 carMarker = mMap.addMarker(markerOptions);
                 if (location.hasBearing()) { // if location has bearing set the same bearing to marker(if location is acquired using GPS bearing will be available)
                     bearing = location.getBearing();
@@ -583,7 +584,7 @@ public class NavigationActivity extends AppCompatActivity {
             Log.d("registered", " on start service");
             startBackgroundService();
         } else {
-            Toast.makeText(getBaseContext(), "service for pre lollipop will be available in next update", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), getString(R.string.toast_service_for_pre_lollipop_will_available), Toast.LENGTH_LONG).show();
         }
     }
 

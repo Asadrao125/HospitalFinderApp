@@ -84,7 +84,7 @@
                     android:id="@+id/tv_map"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mapview"
+                    android:text="@string/mapview"
                     android:textColor="@color/red"
                     android:textSize="16sp" />
 
@@ -112,7 +112,7 @@
                 android:id="@+id/tv_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Listview"
+                android:text="@string/listview"
                 android:textSize="16sp" />
 
         </LinearLayout>

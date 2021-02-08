@@ -65,7 +65,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashbordActivity extends AppCompatActivity implements ApiCallback {
+import static com.gexton.hospitalfinderapp.BaseActivity.MY_PREFS_NAME;
+
+public class DashbordActivity extends BaseActivity implements ApiCallback {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -77,7 +79,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
 
     ActvAdapter actvAdapter;
     ArrayList<HospitalBean> hospitalList;
-    String MY_PREFS_NAME = "HospitalFinder";
+
 
     FragmentHospital fragmentHospital;
     FragmentDoctors fragmentDoctors;
@@ -91,7 +93,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
     double lati, longi;
     ApiCallback apiCallback;
 
-    LinearLayout find_hospital_layout, find_doctor_layout, find_pharmacy_layout, share_to_a_friend, rate_app;
+    LinearLayout find_hospital_layout, find_doctor_layout, find_pharmacy_layout, share_to_a_friend, rate_app, change_language_layout;
 
     OnSwipeTouchListener onSwipeTouchListener;
     SharedPreferences.Editor editor2;
@@ -126,6 +128,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         contentFrame = findViewById(R.id.contentFrame);
         hospitalList = new ArrayList<>();
         editor2 = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        change_language_layout = findViewById(R.id.change_language_layout);
 
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +182,14 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
             @Override
             public void onClick(View view) {
                 viewPager.setCurrentItem(2);
+                dl.closeDrawers();
+            }
+        });
+
+        change_language_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ChangeLanguageActivity.class));
                 dl.closeDrawers();
             }
         });
@@ -278,7 +289,7 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(DashbordActivity.this, "Please enable your location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DashbordActivity.this, getString(R.string.toast_please_enable_your_location), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -291,9 +302,9 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         fragmentHospital = new FragmentHospital();
         fragmentDoctors = new FragmentDoctors();
         fragmentPharmacies = new FragmentPharmacies();
-        adapter.addFragment(fragmentHospital, "HOSPITAL");
-        adapter.addFragment(fragmentDoctors, "DOCTOR");
-        adapter.addFragment(fragmentPharmacies, "PHARMACY");
+        adapter.addFragment(fragmentHospital, getString(R.string.tab_hospital));
+        adapter.addFragment(fragmentDoctors, getString(R.string.tab_doctor));
+        adapter.addFragment(fragmentPharmacies, getString(R.string.tab_pharmacy));
         viewPager.setAdapter(adapter);
     }
 
@@ -318,8 +329,8 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         try {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Hospital Finder");
-            String shareMessage = "Let me recommend you Hospital Finder application\n\n";
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.hospital_finder));
+            String shareMessage = getString(R.string.recomendation_text);
             shareMessage = shareMessage + getString(R.string.playstore_url);
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(shareIntent, ""));
@@ -428,22 +439,9 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_please_turn_on_gps), Toast.LENGTH_SHORT).show();
             Log.d("gps_tag", "onActivityResult: RESULT_CANCELED");
         }
-    }
-
-    private Intent rateIntentForUrl(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, getPackageName())));
-        int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-        if (Build.VERSION.SDK_INT >= 21) {
-            flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
-        } else {
-            //noinspection deprecation
-            flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
-        }
-        intent.addFlags(flags);
-        return intent;
     }
 
     static class OnSwipeTouchListener implements View.OnTouchListener {

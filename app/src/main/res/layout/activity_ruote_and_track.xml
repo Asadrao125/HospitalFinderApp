@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:text="Start Navigation" />
+        android:text="@string/start_navigation" />
 
     <TextView
         android:fontFamily="@font/roboto_regular"
@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:background="@color/white"
         android:padding="10dp"
-        android:text="  Distance"
+        android:text="@string/distance"
         android:textColor="@color/black"
         android:textSize="18sp" />
 

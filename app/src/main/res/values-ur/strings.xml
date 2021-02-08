@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">ہاسپٹل فائنڈر</string>
+    <string name="title_activity_maps">نقشہ</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">ہیلو خالی ٹکڑا</string>
+    <string name="Open">کھولو</string>
+    <string name="Close">بند کریں</string>
+    <string name="title_activity_tracking_and_ruote">نقشہ</string>
+    <string name="title_activity_ruote_and_track">نقشہ</string>
+
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=com.gexton.hospitalfinderapp</string>
+
+    <string name="hospital_finder">ہسپتال تلاش کرنے والا</string>
+    <string name="search_for">تلاش کریں…</string>
+    <string name="find_the_nearby_nhospitals_doctors_clinic_or_pharmacies_in_your_city">اپنے شہر میں قریبی اسپتالوں ، ڈاکٹروں کے کلینک یا دواخانے تلاش کریں۔</string>
+    <string name="find_hospitals">ہسپتال تلاش کریں</string>
+    <string name="find_doctors">ڈاکٹروں کو تلاش کریں</string>
+    <string name="find_pharmacies">دواؤں کو تلاش کریں</string>
+    <string name="rate_app">شرح ایپ</string>
+    <string name="share_to_a_friend">کسی دوست کو شیئر کریں</string>
+    <string name="start_foreground_tracking">پیش منظر سے باخبر رہنا شروع کریں</string>
+    <string name="start_background_tracking">پس منظر سے باخبر رہنا شروع کریں</string>
+    <string name="possible_routes">ممکنہ راستے</string>
+    <string name="navigate">تشریف لے جائیں</string>
+    <string name="duration">دورانیہ</string>
+    <string name="distance">فاصلے</string>
+    <string name="start_navigation">نیویگیشن شروع کریں</string>
+    <string name="search">تلاش کریں</string>
+    <string name="track">ٹریک</string>
+    <string name="hospital_name">ہسپتال کا نام</string>
+    <string name="mapview">میپ ویو</string>
+    <string name="listview">فہرست دیکھیں</string>
+    <string name="search_result">تلاش کا نتیجہ</string>
+    <string name="address">پتہ</string>
+    <string name="name">نام</string>
+    <string name="latitude">طول</string>
+    <string name="longitude">طول البلد</string>
+    <string name="toast_please_enable_your_location">براہ کرم اپنا مقام قابل بنائیں</string>
+    <string name="tab_hospital">ہسپتال</string>
+    <string name="tab_doctor">ڈاکٹر</string>
+    <string name="tab_pharmacy">فارمیسی</string>
+    <string name="recomendation_text">میں آپ کو ہسپتال فائنڈر کی درخواست کی سفارش کرتا ہوں.</string>
+    <string name="toast_please_turn_on_gps">براہ کرم GPS کو آن کریں</string>
+    <string name="gps_is_setting">GPS is settings</string>
+    <string name="gps_not_enabled_msg_show_alert_gps_dialog">GPS فعال نہیں ہے۔ کیا آپ سیٹنگ مینو میں جانا چاہتے ہیں؟</string>
+    <string name="settings">ترتیبات</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="toast_permission_required">اجازت کی ضرورت ہے !!</string>
+    <string name="toast_navigation_stated">نیویگیشن شروع ہوئی</string>
+    <string name="notification_ticker_tracking">ٹریکنگ</string>
+    <string name="notification_content_title_trip_in_progress">سفر جاری ہے</string>
+    <string name="toast_navigation_stopped">نیویگیشن رک گئی</string>
+    <string name="gps_dialog_message_like_google_map">ایسا لگتا ہے کہ آپ کا GPS غیر فعال ہے ، کیا آپ اسے قابل بنانا چاہتے ہیں؟</string>
+    <string name="yes">جی ہاں</string>
+    <string name="no">نہیں</string>
+    <string name="toast_this_is_no_supported_for_play_services">اس کی حمایت نہیں کی جاتی ہے</string>
+    <string name="toast_marker_dragged">مارکر گھسیٹا گیا</string>
+    <string name="my_location_title_for_marker">میرا مقام</string>
+    <string name="toast_service_for_pre_lollipop_will_available">اگلے اپڈیٹ میں پری لالیپپ کیلئے خدمات دستیاب ہوں گی</string>
+    <string name="navigation">نیویگیشن</string>
+    <string name="stop_trip">سفر بند کریں</string>
+    <string name="start_trip">سفر شروع کریں</string>
+    <string name="toast_yet_to_be_coded">کوڈت ہونا ابھی باقی ہے - سروس بند کرو</string>
+    <string name="stop_foreground_tracking">فارورگونڈ ٹریکنگ کو روکیں</string>
+    <string name="possible_route_title">ممکنہ راستے</string>
+    <string name="change_language">Change Language</string>
+
+</resources>

@@ -39,6 +39,7 @@ import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.gexton.hospitalfinderapp.BaseActivity;
 import com.gexton.hospitalfinderapp.R;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -72,7 +73,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RuoteTestActivity extends AppCompatActivity {
+public class RuoteTestActivity extends BaseActivity {
     String name, address;
     double hLat, hLong, cLatitude, cLongitude;
     String serverKey = "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8";
@@ -117,7 +118,7 @@ public class RuoteTestActivity extends AppCompatActivity {
                     Log.d("registered", " on start service");
                     startBackgroundService();
                 } else {
-                    Toast.makeText(getBaseContext(), "service for pre lollipop will be available in next update", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), getString(R.string.toast_service_for_pre_lollipop_will_available), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -136,7 +137,7 @@ public class RuoteTestActivity extends AppCompatActivity {
         try {
             mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
-                    .title("My Location")
+                    .title(getString(R.string.my_location_title_for_marker))
                     .position(new LatLng(cLatitude, cLongitude)));
 
             mMap.addMarker(new MarkerOptions()
@@ -245,7 +246,7 @@ public class RuoteTestActivity extends AppCompatActivity {
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
                 markerOptions.anchor(0.5f, 0.5f); // set the car image to center of the point instead of anchoring to above or below the location
                 markerOptions.flat(true); // set as true, so that when user rotates the map car icon will remain in the same direction
-                markerOptions.title("My Location").position(new LatLng(location.getLatitude(), location.getLongitude()));
+                markerOptions.title(getString(R.string.my_location_title_for_marker)).position(new LatLng(location.getLatitude(), location.getLongitude()));
                 carMarker = mMap.addMarker(markerOptions);
                 if (location.hasBearing()) { // if location has bearing set the same bearing to marker(if location is acquired using GPS bearing will be available)
                     bearing = location.getBearing();
@@ -369,7 +370,7 @@ public class RuoteTestActivity extends AppCompatActivity {
                 LocalBroadcastManager.getInstance(getBaseContext()).sendBroadcast(stopJobService);
                 //changeServiceButton(false);
             } else {
-                Toast.makeText(getApplicationContext(), "yet to be coded - stop service", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_service_for_pre_lollipop_will_available), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -420,8 +421,7 @@ public class RuoteTestActivity extends AppCompatActivity {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
                             ResolvableApiException resolvable = (ResolvableApiException) e;
-                            resolvable.startResolutionForResult(RuoteTestActivity.this,
-                                    REQUEST_CHECK_SETTINGS);
+                            resolvable.startResolutionForResult(RuoteTestActivity.this, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException sendEx) {
                             // Ignore the error.
                         }
@@ -447,7 +447,7 @@ public class RuoteTestActivity extends AppCompatActivity {
             ;
         };
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "location permission required !!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.toast_permission_required), Toast.LENGTH_SHORT).show();
             return;
         }
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);

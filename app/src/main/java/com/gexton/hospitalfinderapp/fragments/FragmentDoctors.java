@@ -158,7 +158,7 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
                     editor.apply();
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.toast_please_turn_on_gps), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -283,7 +283,7 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
 
                 } else {
                     //gps.showSettingsAlert();
-                    Toast.makeText(getContext(), "Please enable your location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.toast_please_turn_on_gps), Toast.LENGTH_SHORT).show();
                 }
             }
         });

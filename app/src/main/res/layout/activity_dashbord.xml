@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Hospital Finder"
+                    android:text="@string/hospital_finder"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -88,7 +88,7 @@
                     android:textSize="16sp"
                     android:background="@color/white"
                     android:drawableRight="@drawable/search_red"
-                    android:hint="Search for..."
+                    android:hint="@string/search_for"
                     android:padding="10dp" />
 
                 <ImageView
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_title"
                     android:layout_marginTop="30dp"
-                    android:text="Find the nearby\nHospitals, Doctors Clinic or Pharmacies in your city."
+                    android:text="@string/find_the_nearby_nhospitals_doctors_clinic_or_pharmacies_in_your_city"
                     android:textColor="@color/white"
                     android:lineSpacingExtra="5dp"
                     android:textSize="22sp" />
@@ -113,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="Hospital Finder"
+                    android:text="@string/hospital_finder"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:text="Find Hospitals"
+                    android:text="@string/find_hospitals"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -213,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:text="Find Doctors"
+                    android:text="@string/find_doctors"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -240,7 +240,34 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:text="FInd Pharmacies"
+                    android:text="@string/find_pharmacies"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/change_language_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/find_pharmacy_layout"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/findpharmacy_sidemenu" />
+
+                <TextView
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/change_language"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -272,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:text="Rate App"
+                        android:text="@string/rate_app"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -298,7 +325,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:text="Share to a friend"
+                        android:text="@string/share_to_a_friend"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 

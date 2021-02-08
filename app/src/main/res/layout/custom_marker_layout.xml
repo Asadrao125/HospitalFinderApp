@@ -20,7 +20,7 @@
             android:layout_height="40dp"
             android:layout_below="@+id/img_layout"
             android:layout_centerInParent="true"
-            android:text="Track" />
+            android:text="@string/track" />
 
         <RelativeLayout
             android:id="@+id/img_layout"
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/hospital_image"
-                android:text="Hospital name"
+                android:text="@string/hospital_name"
                 android:textColor="@color/black" />
 
             <TextView
@@ -53,7 +53,7 @@
                 android:layout_below="@+id/hospital_name"
                 android:layout_toEndOf="@+id/hospital_image"
                 android:maxLines="2"
-                android:text="Address" />
+                android:text="@string/address" />
 
         </RelativeLayout>
 
@@ -67,7 +67,7 @@
                 android:id="@+id/tv_latitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Latitude"
+                android:text="@string/latitude"
                 android:visibility="gone" />
 
             <TextView
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_latitude"
-                android:text="Longitude"
+                android:text="@string/longitude"
                 android:visibility="gone" />
 
         </RelativeLayout>
