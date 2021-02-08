@@ -7,4 +7,7 @@
     <string name="Close">Close</string>
     <string name="title_activity_tracking_and_ruote">Map</string>
     <string name="title_activity_ruote_and_track">Map</string>
+
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=com.gexton.hospitalfinderapp</string>
+
 </resources>

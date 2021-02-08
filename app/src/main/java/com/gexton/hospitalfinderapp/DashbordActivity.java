@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -193,7 +194,11 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         rate_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shareIntent();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.playstore_url))));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.playstore_url))));
+                }
                 dl.closeDrawers();
             }
         });
@@ -279,7 +284,6 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
             }
         });
         actv.setThreshold(1);
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -314,9 +318,9 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
         try {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Hospital FInder App");
-            String shareMessage = "Let me recommend you this application\n\n";
-            shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID;
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Hospital Finder");
+            String shareMessage = "Let me recommend you Hospital Finder application\n\n";
+            shareMessage = shareMessage + getString(R.string.playstore_url);
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(shareIntent, ""));
         } catch (Exception e) {
@@ -427,6 +431,19 @@ public class DashbordActivity extends AppCompatActivity implements ApiCallback {
             Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
             Log.d("gps_tag", "onActivityResult: RESULT_CANCELED");
         }
+    }
+
+    private Intent rateIntentForUrl(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, getPackageName())));
+        int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
+        if (Build.VERSION.SDK_INT >= 21) {
+            flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
+        } else {
+            //noinspection deprecation
+            flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
+        }
+        intent.addFlags(flags);
+        return intent;
     }
 
     static class OnSwipeTouchListener implements View.OnTouchListener {
