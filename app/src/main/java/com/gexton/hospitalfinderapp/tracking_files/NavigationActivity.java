@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Property;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,11 +50,15 @@ import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.gexton.hospitalfinderapp.AdUtil;
 import com.gexton.hospitalfinderapp.BaseActivity;
 import com.gexton.hospitalfinderapp.MapStyleJSON;
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -106,10 +111,11 @@ public class NavigationActivity extends BaseActivity {
     public static final String LOCATION_ACQUIRED = "locAcquired";
     String name, address;
     double hLat, hLong, cLatitude, cLongitude;
-    TextView tvHospitalName;
-    ImageView imgBack;
+    //TextView tvHospitalName;
+    //ImageView imgBack;
     String serverKey = "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8";
     String MY_PREFS_NAME = "HospitalFinder";
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +125,15 @@ public class NavigationActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
         }
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(NavigationActivity.this);
+        adUtil.loadBannerAd(adView);
+
+        setTitle(getString(R.string.navigation));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         name = prefs.getString("name", "NoValue");
@@ -138,8 +153,8 @@ public class NavigationActivity extends BaseActivity {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         button = (Button) findViewById(R.id.b_action);
         bService = (Button) findViewById(R.id.b_service);
-        tvHospitalName = findViewById(R.id.tvHospitalName);
-        imgBack = findViewById(R.id.img_back);
+        //tvHospitalName = findViewById(R.id.tvHospitalName);
+        //imgBack = findViewById(R.id.img_back);
         mapFragment = SupportMapFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.map_fragment, mapFragment).commitAllowingStateLoss();
@@ -226,13 +241,8 @@ public class NavigationActivity extends BaseActivity {
             }
         });*/
 
-        tvHospitalName.setText(R.string.navigation);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        /*tvHospitalName.setText(R.string.navigation);*/
+
     }
 
     private BroadcastReceiver jobStateChanged = new BroadcastReceiver() {
@@ -604,4 +614,11 @@ public class NavigationActivity extends BaseActivity {
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

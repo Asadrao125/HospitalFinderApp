@@ -11,12 +11,16 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+
 import java.util.Locale;
 
 public class ChangeLanguageActivity extends BaseActivity {
     ImageView imgBack;
     RelativeLayout layout_sindhi, layout_urdu, layout_english;
     RadioButton rb_sindhi, rb_urdu, rb_english;
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +39,23 @@ public class ChangeLanguageActivity extends BaseActivity {
         rb_urdu = findViewById(R.id.rb_urdu);
         rb_english = findViewById(R.id.rb_eng);
 
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(ChangeLanguageActivity.this);
+        adUtil.loadBannerAd(adView);
+
         String lang = prefs.getString("lang_key", "en");
 
-        System.out.println("-- oncreate lang "+lang);
+        System.out.println("-- oncreate lang " + lang);
 
-        if(lang.equalsIgnoreCase("en")){
+        if (lang.equalsIgnoreCase("en")) {
             rb_english.setChecked(true);
             rb_urdu.setChecked(false);
             rb_sindhi.setChecked(false);
-        }else if(lang.equalsIgnoreCase("ur")){
+        } else if (lang.equalsIgnoreCase("ur")) {
             rb_english.setChecked(false);
             rb_urdu.setChecked(true);
             rb_sindhi.setChecked(false);
-        }else if(lang.equalsIgnoreCase("si")){
+        } else if (lang.equalsIgnoreCase("si")) {
             rb_english.setChecked(false);
             rb_urdu.setChecked(false);
             rb_sindhi.setChecked(true);
@@ -107,7 +115,7 @@ public class ChangeLanguageActivity extends BaseActivity {
         }
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             getApplicationContext().createConfigurationContext(conf);
         } else {
 //resources.updateConfiguration(configuration,displayMetrics);
@@ -116,15 +124,13 @@ public class ChangeLanguageActivity extends BaseActivity {
 
         Locale.setDefault(myLocale);
 
-        System.out.println("-- in changelocale lang  "+lang);
+        System.out.println("-- in changelocale lang  " + lang);
 
         prefs.edit().putString("lang_key", lang).apply();
 
         Intent intent = new Intent(this, DashbordActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-
-
 
 
 //Intent refresh = new Intent(this, MainActivity.class);

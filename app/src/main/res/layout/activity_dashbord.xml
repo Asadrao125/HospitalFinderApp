@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:openDrawer="start"
+    android:layout_height="match_parent"
     tools:context=".DashbordActivity">
 
     <RelativeLayout
@@ -30,6 +30,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/search_white" />
 
                 <TextView
@@ -88,6 +89,7 @@
                     android:textSize="16sp"
                     android:background="@color/white"
                     android:drawableRight="@drawable/search_red"
+                    android:drawablePadding="10dp"
                     android:hint="@string/search_for"
                     android:padding="10dp" />
 
@@ -152,6 +154,7 @@
                     android:layout_height="35dp"
                     android:layout_marginBottom="50dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:padding="5dp"
                     android:src="@drawable/menu" />
@@ -160,6 +163,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/logo_splash" />
 
             </LinearLayout>
@@ -170,7 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/image_layout"
                 android:layout_marginBottom="30dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -178,6 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
                     android:src="@drawable/findhospital_sidemenu" />
 
                 <TextView
@@ -185,7 +190,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
                     android:text="@string/find_hospitals"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -198,10 +202,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/find_hospital_layout"
                 android:layout_marginBottom="30dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
@@ -212,7 +217,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
                     android:text="@string/find_doctors"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -225,13 +229,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/find_doctor_layout"
                 android:layout_marginBottom="30dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:src="@drawable/findpharmacy_sidemenu" />
 
                 <TextView
@@ -239,7 +244,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
                     android:text="@string/find_pharmacies"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -252,12 +256,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/find_pharmacy_layout"
                 android:layout_marginBottom="30dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/findpharmacy_sidemenu" />
 
@@ -266,7 +271,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
                     android:text="@string/change_language"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -284,12 +288,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/share_to_a_friend"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/rateapp" />
 
@@ -298,7 +303,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
                         android:text="@string/rate_app"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
@@ -310,12 +314,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/shareapp" />
 
@@ -324,7 +329,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
                         android:text="@string/share_to_a_friend"
                         android:textColor="@color/white"
                         android:textSize="16sp" />

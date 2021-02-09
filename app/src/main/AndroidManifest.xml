@@ -15,7 +15,8 @@
             android:name=".RouteShowActivity"
             android:theme="@style/Theme.Toolbar" />
         <activity android:name=".tracking_files.RuoteTestActivity" />
-        <activity android:name=".tracking_files.NavigationActivity" />
+        <activity android:name=".tracking_files.NavigationActivity"
+            android:theme="@style/Theme.Toolbar"/>
         <activity
             android:name=".extras.RuoteAndTrackActivity"
             android:label="@string/title_activity_ruote_and_track"
@@ -36,8 +37,13 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" />
+
         <!--
- <service
+        <service
             android:name=".tracking_files.UploadLocationService"
             android:exported="true" />
         -->
@@ -48,16 +54,14 @@
         <!-- Required for Android 10 (API level 29) and higher. -->
         <service
             android:name=".gps.GPSTracker"
-            android:foregroundServiceType="location">
+            android:foregroundServiceType="location"></service>
 
-            <!-- Any inner elements would go here. -->
-        </service>
     </application>
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

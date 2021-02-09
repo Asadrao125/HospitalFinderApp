@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".tracking_files.NavigationActivity">
 
     <Button
-        android:visibility="gone"
         android:id="@+id/b_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +15,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:tag="s"
-        android:text="@string/start_foreground_tracking" />
+        android:text="@string/start_foreground_tracking"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/b_service"
@@ -28,48 +29,21 @@
         android:tag="s"
         android:text="@string/start_background_tracking" />
 
-    <RelativeLayout
-        android:id="@+id/toolbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/red"
-            android:padding="15dp">
-
-            <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:padding="5dp"
-                android:src="@drawable/back_arrow"
-                android:tint="@color/white" />
-
-            <TextView
-                android:fontFamily="@font/roboto_regular"
-                android:id="@+id/tvHospitalName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/img_back"
-                android:maxLines="1"
-                android:text="@string/possible_routes"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/b_service"
+        android:layout_centerHorizontal="true"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="@string/ad_unit_id"></com.google.android.gms.ads.AdView>
 
     <fragment
         android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/adView"
         android:layout_below="@+id/toolbar_layout" />
 
 </RelativeLayout>

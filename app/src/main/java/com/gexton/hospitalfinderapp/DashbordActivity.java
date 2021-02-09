@@ -47,6 +47,9 @@ import com.gexton.hospitalfinderapp.fragments.FragmentHospital;
 import com.gexton.hospitalfinderapp.fragments.FragmentPharmacies;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.material.tabs.TabLayout;
@@ -146,8 +149,7 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                float slideX = drawerView.getWidth() * slideOffset;
-                contentFrame.setTranslationX(slideX);
+                contentFrame.setTranslationX(slideOffset * drawerView.getWidth());
             }
         };//Animation Sliding Ends here
 

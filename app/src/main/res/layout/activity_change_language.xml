@@ -7,13 +7,14 @@
     tools:context=".ChangeLanguageActivity">
 
     <RelativeLayout
+        android:id="@+id/layout_language_selection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_layout"
+        android:paddingBottom="30dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp">
+        android:paddingTop="30dp">
 
         <RelativeLayout
             android:id="@+id/layout_english"
@@ -21,15 +22,15 @@
             android:layout_height="wrap_content">
 
             <RadioButton
-                android:focusable="false"
-                android:clickable="false"
-                android:longClickable="false"
-
                 android:id="@+id/rb_eng"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:focusable="false"
+                android:longClickable="false" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,19 +43,19 @@
 
         <RelativeLayout
             android:id="@+id/layout_urdu"
-            android:layout_below="@+id/layout_english"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_english">
 
             <RadioButton
-                android:focusable="false"
-                android:clickable="false"
-                android:longClickable="false"
                 android:id="@+id/rb_urdu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:focusable="false"
+                android:longClickable="false" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,20 +67,20 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_below="@+id/layout_urdu"
             android:id="@+id/layout_sindhi"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_urdu">
 
             <RadioButton
-                android:focusable="false"
-                android:clickable="false"
-                android:longClickable="false"
                 android:id="@+id/rb_sindhi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:focusable="false"
+                android:longClickable="false" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,28 +93,15 @@
 
     </RelativeLayout>
 
-    <!--  <RadioGroup
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/toolbar_layout"
-          android:layout_margin="20dp">
-
-          <RadioButton
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="English" />
-
-          <RadioButton
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Urdu" />
-
-          <RadioButton
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="UrSindhidu" />
-
-      </RadioGroup>-->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="@string/ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 
     <RelativeLayout
         android:id="@+id/toolbar_layout"

@@ -37,6 +37,9 @@ import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.tracking_files.NavigationActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -62,6 +65,7 @@ public class RouteShowActivity extends BaseActivity {
     TextView tv_duration, tv_distance;
     Button btn_navigate;
     String MY_PREFS_NAME = "HospitalFinder";
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,14 @@ public class RouteShowActivity extends BaseActivity {
         tv_distance = findViewById(R.id.tv_distance);
         tv_duration = findViewById(R.id.tv_duration);
         btn_navigate = findViewById(R.id.btn_navigate);
+
+        adView = findViewById(R.id.adView);
+        /*adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId(getString(R.string.ad_unit_id));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);*/
+        AdUtil adUtil = new AdUtil(RouteShowActivity.this);
+        adUtil.loadBannerAd(adView);
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         name = prefs.getString("name", "NoValue");

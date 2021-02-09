@@ -1,15 +1,9 @@
 package com.gexton.hospitalfinderapp.fragments;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -26,16 +20,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.AdUtil;
 import com.gexton.hospitalfinderapp.MapStyleJSON;
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
 import com.gexton.hospitalfinderapp.adapters.PharmacyArrayAdapter;
-import com.gexton.hospitalfinderapp.extras.RuoteAndTrackActivity;
-import com.gexton.hospitalfinderapp.adapters.HospitalArrayAdapter;
 import com.gexton.hospitalfinderapp.api.ApiCallback;
 import com.gexton.hospitalfinderapp.api.ApiManager;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -73,6 +67,7 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
     String MY_PREFS_NAME = "HospitalFinder";
     Marker marker;
     double newLat, newLng;
+    AdView adView, adView2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +83,13 @@ public class FragmentPharmacies extends Fragment implements ApiCallback {
         mapview_layout = view.findViewById(R.id.mapview_layout);
         listview_layout = view.findViewById(R.id.listview_layout);
         list_View = view.findViewById(R.id.list_View);
+
+        adView = view.findViewById(R.id.adView);
+        adView2 = view.findViewById(R.id.adView2);
+
+        AdUtil adUtil = new AdUtil(getActivity());
+        adUtil.loadBannerAd(adView);
+        adUtil.loadBannerAd(adView2);
 
         // For listener
         mapview_layout = view.findViewById(R.id.mapview_layout);

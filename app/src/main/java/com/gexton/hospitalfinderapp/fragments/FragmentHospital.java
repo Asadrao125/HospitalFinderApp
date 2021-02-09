@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gexton.hospitalfinderapp.AdUtil;
 import com.gexton.hospitalfinderapp.MapStyleJSON;
 import com.gexton.hospitalfinderapp.R;
 import com.gexton.hospitalfinderapp.RouteShowActivity;
@@ -27,6 +28,9 @@ import com.gexton.hospitalfinderapp.api.ApiCallback;
 import com.gexton.hospitalfinderapp.api.ApiManager;
 import com.gexton.hospitalfinderapp.gps.GPSTracker;
 import com.gexton.hospitalfinderapp.models.HospitalBean;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,6 +69,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
     String MY_PREFS_NAME = "HospitalFinder";
     Marker marker;
     double newLat, newLng;
+    AdView adView, adView2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +85,13 @@ public class FragmentHospital extends Fragment implements ApiCallback {
         mapview_layout = view.findViewById(R.id.mapview_layout);
         listview_layout = view.findViewById(R.id.listview_layout);
         list_View = view.findViewById(R.id.list_View);
+
+        adView = view.findViewById(R.id.adView);
+        adView2 = view.findViewById(R.id.adView2);
+
+        AdUtil adUtil = new AdUtil(getActivity());
+        adUtil.loadBannerAd(adView);
+        adUtil.loadBannerAd(adView2);
 
         // For listener
         mapview_layout = view.findViewById(R.id.mapview_layout);

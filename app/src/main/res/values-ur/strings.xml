@@ -63,6 +63,6 @@
     <string name="toast_yet_to_be_coded">کوڈت ہونا ابھی باقی ہے - سروس بند کرو</string>
     <string name="stop_foreground_tracking">فارورگونڈ ٹریکنگ کو روکیں</string>
     <string name="possible_route_title">ممکنہ راستے</string>
-    <string name="change_language">Change Language</string>
+    <string name="change_language">زبان تبدیل کریں</string>
 
 </resources>
