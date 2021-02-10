@@ -152,7 +152,7 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
 
-                if (!lang.equalsIgnoreCase("en")) {
+                if (!lang.equalsIgnoreCase("en") && !lang.equalsIgnoreCase("si")) {
                     contentFrame.setTranslationX(-slideOffset * drawerView.getWidth());
                     dl.bringChildToFront(drawerView);
                     dl.requestLayout();
@@ -161,8 +161,6 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
                     dl.bringChildToFront(drawerView);
                     dl.requestLayout();
                 }
-
-
             }
         }; //Animation Sliding Ends here
 
