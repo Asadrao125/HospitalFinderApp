@@ -83,7 +83,6 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
     ActvAdapter actvAdapter;
     ArrayList<HospitalBean> hospitalList;
 
-
     FragmentHospital fragmentHospital;
     FragmentDoctors fragmentDoctors;
     FragmentPharmacies fragmentPharmacies;
@@ -152,9 +151,18 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                if (lang.equals("en")) {
+
+                if (!lang.equalsIgnoreCase("en")) {
+                    contentFrame.setTranslationX(-slideOffset * drawerView.getWidth());
+                    dl.bringChildToFront(drawerView);
+                    dl.requestLayout();
+                } else {
                     contentFrame.setTranslationX(slideOffset * drawerView.getWidth());
+                    dl.bringChildToFront(drawerView);
+                    dl.requestLayout();
                 }
+
+
             }
         }; //Animation Sliding Ends here
 
