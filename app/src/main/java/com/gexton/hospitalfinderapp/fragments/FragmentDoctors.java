@@ -325,7 +325,7 @@ public class FragmentDoctors extends Fragment implements ApiCallback {
                     tv_longitude.setText("" + hospitalBeanFromMArker.lng);
                     hospital_image.setImageResource(R.drawable.hospital);
                     tv_address.setText(hospitalBeanFromMArker.address);
-                    btnTrack.setText("Track " + hospitalBeanFromMArker.hospitalName);
+                    btnTrack.setText(getString(R.string.track) + " " + hospitalBeanFromMArker.hospitalName);
                     btnTrack.setTextColor(Color.BLACK);
                 }
                 return v;

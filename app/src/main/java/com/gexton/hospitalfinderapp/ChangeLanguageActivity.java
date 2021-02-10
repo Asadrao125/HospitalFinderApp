@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -16,8 +17,10 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+
 public class ChangeLanguageActivity extends BaseActivity {
-    ImageView imgBack;
+    //ImageView imgBack;
     RelativeLayout layout_sindhi, layout_urdu, layout_english;
     RadioButton rb_sindhi, rb_urdu, rb_english;
     AdView adView;
@@ -31,13 +34,17 @@ public class ChangeLanguageActivity extends BaseActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
         }
 
-        imgBack = findViewById(R.id.imgBack);
+        //imgBack = findViewById(R.id.imgBack);
         layout_sindhi = findViewById(R.id.layout_sindhi);
         layout_urdu = findViewById(R.id.layout_urdu);
         layout_english = findViewById(R.id.layout_english);
         rb_sindhi = findViewById(R.id.rb_sindhi);
         rb_urdu = findViewById(R.id.rb_urdu);
         rb_english = findViewById(R.id.rb_eng);
+
+        setTitle(getString(R.string.change_language));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         adView = findViewById(R.id.adView);
         AdUtil adUtil = new AdUtil(ChangeLanguageActivity.this);
@@ -60,13 +67,6 @@ public class ChangeLanguageActivity extends BaseActivity {
             rb_urdu.setChecked(false);
             rb_sindhi.setChecked(true);
         }
-
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
         layout_english.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,15 +92,6 @@ public class ChangeLanguageActivity extends BaseActivity {
         });
     }
 
-    /*public void setLocale(String languageCode) {
-        String languageToLoad = languageCode; // your language
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-    }*/
-
     public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
@@ -118,7 +109,7 @@ public class ChangeLanguageActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             getApplicationContext().createConfigurationContext(conf);
         } else {
-//resources.updateConfiguration(configuration,displayMetrics);
+            //resources.updateConfiguration(configuration,displayMetrics);
             res.updateConfiguration(conf, dm);
         }
 
@@ -131,13 +122,14 @@ public class ChangeLanguageActivity extends BaseActivity {
         Intent intent = new Intent(this, DashbordActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-
-
-//Intent refresh = new Intent(this, MainActivity.class);
-//startActivity(refresh); finish();
-
-/*Configuration configuration = getResources().getConfiguration();
-configuration.setLayoutDirection(new Locale("fa"));
-getResources().updateConfiguration(configuration, getResources().getDisplayMetrics());*/
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

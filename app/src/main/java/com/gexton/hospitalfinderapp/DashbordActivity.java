@@ -96,6 +96,8 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
     double lati, longi;
     ApiCallback apiCallback;
 
+    String lang;
+
     LinearLayout find_hospital_layout, find_doctor_layout, find_pharmacy_layout, share_to_a_friend, rate_app, change_language_layout;
 
     OnSwipeTouchListener onSwipeTouchListener;
@@ -143,15 +145,18 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
             }
         });
 
+        lang = prefs.getString("lang_key", "en");
+
         //Animation Sliding Activity
         t = new ActionBarDrawerToggle(this, dl, toolbar, R.string.Open, R.string.Close) {
-
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                contentFrame.setTranslationX(slideOffset * drawerView.getWidth());
+                if (lang.equals("en")) {
+                    contentFrame.setTranslationX(slideOffset * drawerView.getWidth());
+                }
             }
-        };//Animation Sliding Ends here
+        }; //Animation Sliding Ends here
 
         dl.addDrawerListener(t);
         t.syncState();

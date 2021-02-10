@@ -9,14 +9,17 @@
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.HospitalFinderApp">
-        <activity android:name=".ChangeLanguageActivity"></activity>
+        <activity
+            android:name=".ChangeLanguageActivity"
+            android:theme="@style/Theme.Toolbar"></activity>
         <activity android:name=".SearchActivity" />
         <activity
             android:name=".RouteShowActivity"
             android:theme="@style/Theme.Toolbar" />
         <activity android:name=".tracking_files.RuoteTestActivity" />
-        <activity android:name=".tracking_files.NavigationActivity"
-            android:theme="@style/Theme.Toolbar"/>
+        <activity
+            android:name=".tracking_files.NavigationActivity"
+            android:theme="@style/Theme.Toolbar" />
         <activity
             android:name=".extras.RuoteAndTrackActivity"
             android:label="@string/title_activity_ruote_and_track"

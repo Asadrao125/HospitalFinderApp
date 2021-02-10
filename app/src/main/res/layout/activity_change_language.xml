@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ChangeLanguageActivity">
 
     <RelativeLayout
@@ -11,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_layout"
+        android:background="@color/white"
         android:paddingBottom="30dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
@@ -19,7 +21,8 @@
         <RelativeLayout
             android:id="@+id/layout_english"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <RadioButton
                 android:id="@+id/rb_eng"
@@ -36,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:background="@color/white"
                 android:text="English"
                 android:textSize="16sp" />
 
@@ -45,7 +49,8 @@
             android:id="@+id/layout_urdu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_english">
+            android:layout_below="@+id/layout_english"
+            android:background="@color/white">
 
             <RadioButton
                 android:id="@+id/rb_urdu"
@@ -61,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:background="@color/white"
                 android:text="Urdu"
                 android:textSize="16sp" />
 
@@ -70,7 +76,8 @@
             android:id="@+id/layout_sindhi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_urdu">
+            android:layout_below="@+id/layout_urdu"
+            android:background="@color/white">
 
             <RadioButton
                 android:id="@+id/rb_sindhi"
@@ -86,6 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:background="@color/white"
                 android:text="Sindhi"
                 android:textSize="16sp" />
 
@@ -97,36 +105,36 @@
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
         app:adSize="SMART_BANNER"
-        app:adUnitId="@string/ad_unit_id">
-    </com.google.android.gms.ads.AdView>
+        app:adUnitId="@string/ad_unit_id"></com.google.android.gms.ads.AdView>
 
-    <RelativeLayout
-        android:id="@+id/toolbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        android:padding="15dp">
+    <!-- <RelativeLayout
+         android:id="@+id/toolbar_layout"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="@color/red"
+         android:padding="15dp">
 
-        <ImageView
-            android:id="@+id/imgBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:src="@drawable/back_arrow" />
+         <ImageView
+             android:id="@+id/imgBack"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerVertical="true"
+             android:padding="5dp"
+             android:src="@drawable/back_arrow" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/imgBack"
-            android:text="Change Language"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerVertical="true"
+             android:layout_toEndOf="@id/imgBack"
+             android:text="Change Language"
+             android:textColor="@color/white"
+             android:textSize="18sp" />
 
-    </RelativeLayout>
+     </RelativeLayout>-->
 
 </RelativeLayout>
