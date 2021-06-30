@@ -11,7 +11,6 @@ import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
 
 public class ApiManager {
-
     Activity activity;
     String getOrPost;
     String apiName;
@@ -32,7 +31,6 @@ public class ApiManager {
     }
 
     public void loadURL() {
-
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(baseURL + apiName, params, new AsyncHttpResponseHandler() {
                     @Override

@@ -400,8 +400,9 @@ public class DashbordActivity extends BaseActivity implements ApiCallback {
         requestParams.put("location", lat + "," + lng);
         requestParams.put("radius", "1500");
         requestParams.put("type", type);
-        requestParams.put("key", "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8");
-
+        requestParams.put("key", "AIzaSyBKEQ-EPcyOqp3HUMLF7iaKBcmv1KnZSuo");
+        /* NEW AIzaSyBKEQ-EPcyOqp3HUMLF7iaKBcmv1KnZSuo */
+        /* OLD AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8 */
         ApiManager apiManager = new ApiManager(DashbordActivity.this, "get", ApiManager.API_HOME_LIST, requestParams, apiCallback);
         apiManager.loadURL();
 

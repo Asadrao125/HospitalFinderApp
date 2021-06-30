@@ -16,16 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class BaseActivity extends AppCompatActivity {
-
-
     public static final String MY_PREFS_NAME = "HospitalFinder";
-
     SharedPreferences prefs;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-
         prefs = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
     }
 

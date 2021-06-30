@@ -182,7 +182,7 @@ public class FragmentHospital extends Fragment implements ApiCallback {
         requestParams.put("location", lat + "," + lng);
         requestParams.put("radius", "1500");
         requestParams.put("type", "hospital");
-        requestParams.put("key", "AIzaSyBx_ZNPy1AlHfpip8-Pcyci76Rb6IkkON8");
+        requestParams.put("key", "AIzaSyBKEQ-EPcyOqp3HUMLF7iaKBcmv1KnZSuo");
 
         ApiManager apiManager = new ApiManager(getActivity(), "get", ApiManager.API_HOME_LIST, requestParams, apiCallback);
         apiManager.loadURL();

@@ -20,7 +20,6 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 
 public class ChangeLanguageActivity extends BaseActivity {
-    //ImageView imgBack;
     RelativeLayout layout_sindhi, layout_urdu, layout_english;
     RadioButton rb_sindhi, rb_urdu, rb_english;
     AdView adView;
@@ -34,7 +33,6 @@ public class ChangeLanguageActivity extends BaseActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.red, this.getTheme()));
         }
 
-        //imgBack = findViewById(R.id.imgBack);
         layout_sindhi = findViewById(R.id.layout_sindhi);
         layout_urdu = findViewById(R.id.layout_urdu);
         layout_english = findViewById(R.id.layout_english);
@@ -51,7 +49,6 @@ public class ChangeLanguageActivity extends BaseActivity {
         adUtil.loadBannerAd(adView);
 
         String lang = prefs.getString("lang_key", "en");
-
         System.out.println("-- oncreate lang " + lang);
 
         if (lang.equalsIgnoreCase("en")) {
@@ -71,7 +68,6 @@ public class ChangeLanguageActivity extends BaseActivity {
         layout_english.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 setLocale("en");
             }
         });
@@ -79,7 +75,6 @@ public class ChangeLanguageActivity extends BaseActivity {
         layout_urdu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 setLocale("ur");
             }
         });
@@ -131,5 +126,4 @@ public class ChangeLanguageActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
